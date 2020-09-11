@@ -21,7 +21,11 @@ geo = 'US'
 cat = 0
 gprop = ''
 # Retrieve Response
+'''
 data = pytrend.get_historical_interest(keyword, year_start=2020, month_start=8, day_start=27, year_end=2020, month_end=9, day_end=10, cat=cat, geo=geo)
+'''
+pytrend.build_payload(keyword, cat=cat, timeframe=timeframe, geo=geo, gprop=gprop)
+data = pytrend.interest_over_time()
 end = time.time()
 print(data)
 # Show data in plot

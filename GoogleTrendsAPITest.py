@@ -9,6 +9,9 @@ import pandas
 
 # pytrends
 # pytrends is an unofficial API for retrieveing Google Trends Data
+# The main limitation of this API is that since it is unofficial it doesn't have access
+# to real-time trend data. The API is limited to weekly data which is only updated
+# at the end of the week. I believe that Google has an official API but more research is needed.
 start = time.time()
 # Setup query terms and conditions
 pytrend = TrendReq(hl='en-US', tz=300)

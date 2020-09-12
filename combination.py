@@ -3,14 +3,14 @@ from pytrends.request import TrendReq
 import matplotlib.pyplot as plt
 import pandas
 
-company_name = 'Under Armour'
-company_symbol = 'NYSE:UAA'
+company_name = 'Amazon'
+company_symbol = 'NYSE:AMZN'
 
 # pytrends
 # Setup query terms and conditions
 pytrend = TrendReq(hl='en-US', tz=300)
 keyword = [company_name]
-timeframe = '2020-04-22 2020-09-09'
+timeframe = '1999-11-01 2020-09-09'
 geo = 'US'
 cat = 0
 gprop = ''
@@ -23,7 +23,7 @@ print(pytrend_data)
 # Setup query
 ts = TimeSeries(key='ID3FSEEQYF2WDB05', output_format='pandas')
 # Retrieve Response
-stock_data, meta_data = ts.get_daily(symbol=company_symbol, outputsize='compact')
+stock_data, meta_data = ts.get_daily(symbol=company_symbol, outputsize='full')
 stock_data = stock_data.drop(['1. open', '4. close', '5. volume'], axis=1)
 print(stock_data)
 
@@ -39,7 +39,7 @@ ax.legend(loc='upper left')
 ax2 = ax.twinx()
 ax2.plot(pytrend_data, color='black', label='Trend')
 ax2.set_ylabel("Number of Searches (%)")
-ax2.legend()
+ax2.legend(loc='upper right')
 plt.title('Stock Prices and Search Trends Plot by Date\nKeyword: ' + company_name + ', Symbol: ' + company_symbol)
 plt.show()
 stock_data.join(pytrend_data, how='outer').to_csv('combo_data.csv', index=True)

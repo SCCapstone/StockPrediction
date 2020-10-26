@@ -2,7 +2,7 @@
 
 The Stock Prediction web app is a Django web app where users can track stock market prices and receive esimated prices based off of a TensorFlow Neural Network.
 
-Read More // LINK HERE
+[READ MORE](https://github.com/SCCapstone/StockPrediction/wiki/Project-Description)
 
 ## External Requirements
 
@@ -45,6 +45,9 @@ In due time.
 # Authors
 
 Aaron B.: abarge@email.sc.edu
+
 Miles Z.: mziemer@email.sc.edu
+
 Max C.: mcorbel@email.sc.edu
+
 Zane H.: ahmedh@email.sc.edu

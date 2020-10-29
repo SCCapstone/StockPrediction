@@ -70,7 +70,7 @@ df.to_csv('y_prices.csv', index=True)
 # We have an option of gethering real-time prices *** WE NEED THIS ***
 # There is no cap to the amount of queries
 # =============================================================================================
-# Query Yahoo
+# Query Yahoo 
 yf_start = time.time()
 data = get_live_price(symbol)
 yf_end = time.time()

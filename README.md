@@ -13,7 +13,11 @@ At this moment we do not have a complete list of the necessary APIs and Librarie
 
 ## Setup
 
-N/A.
+Navigate to the root directory of the project. And run:
+
+`pipenv install`
+
+This will install all of the required Python modules.
 
 ## Running
 

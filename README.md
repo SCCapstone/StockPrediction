@@ -8,10 +8,14 @@ The Stock Prediction web app is a Django web app where users can track stock mar
 
 At this moment we do not have a complete list of the necessary APIs and Libraries. We will add one as soon as possible. Here are the ones we have at the moment.
 
-* [Alpha Vantage](https://www.alphavantage.co/documentation/)
-* [pytrends](https://pypi.org/project/pytrends/)
+* Stock Prices API: [Finnhub.io](https://finnhub.io/docs/api)
+* Google Trends API: [pytrends](https://pypi.org/project/pytrends/)
+* Task Management: [Celery](https://docs.celeryproject.org/en/stable/index.html)
+* Message Broker [RabbitMQ](https://www.rabbitmq.com/documentation.html)
 
 ## Setup
+
+First you will need to install RabbitMQ. This is the message broker that we use to schedule tasks. [Download](https://www.rabbitmq.com/download.html).
 
 Navigate to the root directory of the project. And run:
 

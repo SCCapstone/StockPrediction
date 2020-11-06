@@ -15,7 +15,7 @@ At this moment we do not have a complete list of the necessary APIs and Librarie
 
 ## Setup
 
-First you will need to install rabbitmq. This is the message broker that we use to schedule tasks. [Download](https://www.rabbitmq.com/download.html).
+First you will need to install RabbitMQ. This is the message broker that we use to schedule tasks. [Download](https://www.rabbitmq.com/download.html).
 
 Navigate to the root directory of the project. And run:
 

@@ -9,7 +9,7 @@ verify_ssl = true
 django = "*"
 requests = "*"
 websocket-client = "*"
-celery = "*"
+django-background-tasks = "*"
 
 [requires]
 python_version = "3.6"

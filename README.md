@@ -17,7 +17,9 @@ At this moment we do not have a complete list of the necessary APIs and Librarie
 
 First you will need to install RabbitMQ. This is the message broker that we use to schedule tasks. [Download](https://www.rabbitmq.com/download.html).
 
-Navigate to the root directory of the project. And run:
+Additionally, you'll need to get an API key from Finnhub.io. [Key](https://finnhub.io/).
+
+Then, navigate to the root directory of the project. And run:
 
 `pipenv install`
 

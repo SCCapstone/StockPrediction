@@ -50,6 +50,10 @@ def on_open(ws):
     ws.send('{"type":"subscribe","symbol":"NVDA"}')
     ws.send('{"type":"subscribe","symbol":"SPOT"}')
     ws.send('{"type":"subscribe","symbol":"SHOP"}')
+    ws.send('{"type":"subscribe","symbol":"PFE"}')
+    ws.send('{"type":"subscribe","symbol":"JNJ"}')
+
+
 
 if __name__ == "__main__":
     websocket.enableTrace(True)

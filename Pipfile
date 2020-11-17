@@ -11,6 +11,7 @@ requests = "*"
 websocket-client = "*"
 django-background-tasks = "*"
 tensorflow = "*"
+nltk = "*"
 
 [requires]
 python_version = "3.6"

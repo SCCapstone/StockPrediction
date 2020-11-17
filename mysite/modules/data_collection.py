@@ -1,5 +1,6 @@
 API_KEY="bua1l2n48v6q418fsepg"
 
+import csv
 import requests
 import websocket
 
@@ -14,54 +15,22 @@ class DataCollection:
     @staticmethod
     def __on_message(ws, message):
         print(message)
+
     @staticmethod
     def __on_error(ws, error):
         print(error)
+
     @staticmethod
     def __on_close(ws):
         print("### closed ###")
+    
     @staticmethod
     def __on_open(ws):
-        ws.send('{"type":"subscribe","symbol":"AAPL"}')
-        ws.send('{"type":"subscribe","symbol":"AMZN"}')
-        ws.send('{"type":"subscribe","symbol":"FB"}')
-        ws.send('{"type":"subscribe","symbol":"GOOG"}')
-        ws.send('{"type":"subscribe","symbol":"GOOGL"}')
-        ws.send('{"type":"subscribe","symbol":"FVRR"}')
-        ws.send('{"type":"subscribe","symbol":"WORK"}')
-        ws.send('{"type":"subscribe","symbol":"MSFT"}')
-        ws.send('{"type":"subscribe","symbol":"ATVI"}')
-        ws.send('{"type":"subscribe","symbol":"MED"}')
-        ws.send('{"type":"subscribe","symbol":"BABA"}')
-        ws.send('{"type":"subscribe","symbol":"NXST"}')
-        ws.send('{"type":"subscribe","symbol":"ABBV"}')
-        ws.send('{"type":"subscribe","symbol":"NMIH"}')
-        ws.send('{"type":"subscribe","symbol":"PEAK"}')
-        ws.send('{"type":"subscribe","symbol":"NEM"}')
-        ws.send('{"type":"subscribe","symbol":"KIRK"}')
-        ws.send('{"type":"subscribe","symbol":"NIO"}')
-        ws.send('{"type":"subscribe","symbol":"PRPLW"}')
-        ws.send('{"type":"subscribe","symbol":"ZM"}')
-        ws.send('{"type":"subscribe","symbol":"PRTS"}')
-        ws.send('{"type":"subscribe","symbol":"TRIL"}')
-        ws.send('{"type":"subscribe","symbol":"TSLA"}')
-        ws.send('{"type":"subscribe","symbol":"NLS"}')
-        ws.send('{"type":"subscribe","symbol":"SE"}')
-        ws.send('{"type":"subscribe","symbol":"QDEL"}')
-        ws.send('{"type":"subscribe","symbol":"PTON"}')
-        ws.send('{"type":"subscribe","symbol":"SITM"}')
-        ws.send('{"type":"subscribe","symbol":"LVGO"}')
-        ws.send('{"type":"subscribe","symbol":"KSPN"}')
-        ws.send('{"type":"subscribe","symbol":"BTAI"}')
-        ws.send('{"type":"subscribe","symbol":"BYND"}')
-        ws.send('{"type":"subscribe","symbol":"SAVA"}')
-        ws.send('{"type":"subscribe","symbol":"BA"}')
-        ws.send('{"type":"subscribe","symbol":"NFLX"}')
-        ws.send('{"type":"subscribe","symbol":"NVDA"}')
-        ws.send('{"type":"subscribe","symbol":"SPOT"}')
-        ws.send('{"type":"subscribe","symbol":"SHOP"}')
-        ws.send('{"type":"subscribe","symbol":"PFE"}')
-        ws.send('{"type":"subscribe","symbol":"JNJ"}')
+        with open('companylist.csv') as csv_file:
+            tickers = csv.reader(csv_file, delimiter=',', quotechar='"')
+            tickers.next() # Skip header
+            for ticker in tickers:
+                ws.send('{"type":"subscribe","symbol":"' + ticker[0] + '"}')
 
     @staticmethod
     def main():

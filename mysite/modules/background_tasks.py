@@ -1,7 +1,11 @@
 from background_task import background
 from .data_collection import DataCollection
 
-@background(schedule=2)
+# TODO:
+#    Stress test requests
+#    Ensure that the poll stocks task is nonblocking
+
+@background(schedule=2) 
 def request(symbol):
     DataCollection.request(symbol)
 

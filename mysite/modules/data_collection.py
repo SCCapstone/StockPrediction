@@ -1,6 +1,7 @@
 API_KEY="bua1l2n48v6q418fsepg"
 
 import csv
+import json
 import requests
 import websocket
 
@@ -39,10 +40,21 @@ class DataCollection:
             on_error=DataCollection.__on_error,
             on_close=DataCollection.__on_close)
         ws.on_open = DataCollection.__on_open
-        ws.run_forever
+        ws.run_forever()
 
     @staticmethod
-    def request(symbol):
+    def request_price(symbol):
         r = requests.get('https://finnhub.io/api/v1/quote?symbol=' + symbol + '&token=' + API_KEY)
-        print(symbol)
-        print(r.json())
+        try:
+            return r.json()
+        except ValueError:
+            return {}
+
+    @staticmethod
+    def request_sentiment(symbol):
+        r = requests.get('https://finnhub.io/api/v1/news-sentiment=' + symbol + '&token=' + API_KEY)
+        try:
+            return r.json()
+        except ValueError:
+            return {}
+

@@ -8,7 +8,7 @@ import websocket
 #    add docstrings
 #    modify on_message & request methods to save the message to the database
 #    modify on_error & on_close methods to log the event in a log file
-#    modify on_open method to subscribe to ALL stocks
+#    maybe done: modify on_open method to subscribe to ALL stocks
 
 
 class DataCollection:

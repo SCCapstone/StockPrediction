@@ -7,7 +7,7 @@ import websocket
 
 # TODO:
 #    add docstrings
-#    modify on_message & request methods to save the message to the database
+#    modify on_message method to save the message to the database
 #    modify on_error & on_close methods to log the event in a log file
 #    maybe done: modify on_open method to subscribe to ALL stocks
 

@@ -1,31 +1,25 @@
-<h1>Welcome to stock prediction fuckers lets make an app</h1>
-<h2>Make an account or login here</h2>
-<a href="create-user">Make User</a>
-<a href="login">Login</a>
-<h3>Soon we will display tracked stocks upon login on this page too</h3>
-<!-- TradingView Widget BEGIN -->
-<div class="tradingview-widget-container" style="padding: 40px;">
-    <div id="tradingview_29472"></div>
-    <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/symbols/NASDAQ-AAPL/" rel="noopener" target="_blank"><span class="blue-text">AAPL Chart</span></a> by TradingView</div>
-    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
-    <script type="text/javascript">
-    new TradingView.widget(
-    {
-    "autosize": true,
-    "symbol": "NASDAQ:AAPL",
-    "interval": "D",
-    "timezone": "Etc/UTC",
-    "theme": "dark",
-    "style": "1",
-    "locale": "en",
-    "toolbar_bg": "#f1f3f6",
-    "enable_publishing": false,
-    "hide_top_toolbar": true,
-    "hide_legend": true,
-    "save_image": false,
-    "container_id": "tradingview_29472"
-  }
-    );
-    </script>
-  </div>
-  <!-- TradingView Widget END -->
+{% if user.is_authenticated %}
+	<form action="{% url 'index' %}" method="GET" accept-charset="utf-8">
+		<button class="searchbutton" type="submit">
+			<i class="fa fa-search"></i>
+		</button>
+		<input class="searchfield" id="searchbox" name="search" type="text" placeholder="Enter a ticker to search">
+	</form>
+	{% if ticker %}
+		<p>Search Results:</p>
+		<a href={{ ticker }}>{{ ticker }}</a>
+		<br>
+	{% endif %}
+	{% if predictions %}
+		<p>Your predictions:</p>
+		{% for prediction in predictions %}
+			<a href={{prediction.ticker}}>{{ prediction.ticker }}</a>
+			<br>
+		{% endfor %}
+	{% endif %}
+	<br>
+	<a href='logout'>Logout</a>
+{% else %}
+	<a href="create-user">Make User</a>
+	<a href="login">Login</a>
+{% endif %}

@@ -15,15 +15,14 @@ from django.contrib.auth.models import User #Django base user
 #       May need to be changed to FloatField, but do not want to have too many digits. 
 #       Decimal Field may not easily convert to float
 #
-#  > historical_price: used for displaying chart
+#  > NOT USED: historical_price: used for displaying chart
 #       TODO
 #       Few options, we could use JSON or numpy files and just store them, or we can
 #       just create a custom field to store floats/decimals
 #
-#  > exp_price_change: predicted price change ? amount of time from date made
+#  > prediction: predicted price change ? amount of time from date made
 #       TODO
 #       Maybe we want to use a range of values, a distribution of them with different confidences
-#       More useful, again potentially storing a dictionary/list, maybe custom field or json/numpy
 #
 #  > tracking: Users tracking this stock
 #
@@ -33,12 +32,22 @@ from django.contrib.auth.models import User #Django base user
 
 class Prediction(models.Model):
 
-    ticker = models.CharField(max_length=5)
+    ticker = models.CharField(max_length=50)
 
-    name = models.CharField(max_length=30)
+    #name = models.CharField(max_length=30)
 
-    current_price = models.DecimalField(max_digits=10, decimal_places=2)
+    prediction = models.DecimalField(max_digits=10, decimal_places=2)
 
     tracking = models.ManyToManyField(User)
 
-    date_made = models.DateField()
+    #date_made = models.DateField()
+############################################
+#
+# READ ONLY: 
+# Used only as a list of all tickers 
+# avaliable
+#
+############################################
+class Ticker(models.Model):
+
+    symbol = models.CharField(max_length=10)

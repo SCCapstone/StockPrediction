@@ -7,7 +7,7 @@ from .data_collection import DataCollection
 #    use all of our available API call limit
 #    Ensure that the poll stocks task is nonblocking
 
-@background(schedule=2) 
+@background(schedule=2)
 def request_price(symbol):
     # DataCollection.request_price returns a map of the current price of the stock
     # https://finnhub.io/docs/api#quote

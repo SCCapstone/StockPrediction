@@ -4,6 +4,7 @@ import csv
 import json
 import requests
 import websocket
+import time
 
 # TODO:
 #    add docstrings
@@ -49,7 +50,18 @@ class DataCollection:
             return r.json()
         except ValueError:
             return {}
-
+    #Used to get historical data to pass to the neural network
+    @staticmethod
+    def request_historical(symbol):
+        now = time.time()
+        then = now - 6450000 #uses unix time, this is 51 days
+        then = int(then)
+        now = int(now)
+        r = requests.get('https://finnhub.io/api/v1/stock/candle?symbol={}&resolution=D&from={}&to={}&token={}'.format(symbol,then,now,API_KEY))
+        try:
+            return r.json()
+        except ValueError:
+            return {}
     @staticmethod
     def request_sentiment(symbol):
         r = requests.get('https://finnhub.io/api/v1/news-sentiment=' + symbol + '&token=' + API_KEY)

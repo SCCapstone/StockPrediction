@@ -1,4 +1,4 @@
-import investpy as iv
+import investpy as iv #Used to get data from yahoo finance
 import pandas as pd
 import os
 import numpy as np
@@ -6,10 +6,10 @@ import math
 import keras
 from train import get_model, train_model
 from analyze import get_macd, get_rsi
-#stocks = iv.get_stocks(country='United States')['symbol']
 
 from keras import backend as K
 
+#USES INVESTPY TO GET DATA FROM YAHOO FINANCE
 #Trains on individual ticker, can be used for multiple training passes saves model
 def train(ticker, model):
     rsi = []

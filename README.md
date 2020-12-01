@@ -7,8 +7,11 @@ The Stock Prediction web app is a Django web app where users can track stock mar
 ## External Requirements
 
 At this moment we do not have a complete list of the necessary APIs and Libraries. We will add one as soon as possible. Here are the ones we have at the moment.
-
+*CURRENTLY USED:
 * Stock Prices API: [Finnhub.io](https://finnhub.io/docs/api)
+* Historical data: investpy
+* Neural network: keras functional API
+* NOT USED:
 * Google Trends API: [pytrends](https://pypi.org/project/pytrends/)
 * Task Management: [Celery](https://docs.celeryproject.org/en/stable/index.html)
 * Message Broker [RabbitMQ](https://www.rabbitmq.com/documentation.html)

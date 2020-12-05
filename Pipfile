@@ -12,6 +12,9 @@ websocket-client = "*"
 django-background-tasks = "*"
 tensorflow = "*"
 nltk = "*"
+matplotlib = "*"
+scipy = "*"
+keras = "*"
 
 [requires]
 python_version = "3.6"

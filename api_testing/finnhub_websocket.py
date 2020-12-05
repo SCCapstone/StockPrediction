@@ -43,6 +43,7 @@ def on_open(ws):
     ws.send('{"type":"subscribe","symbol":"LVGO"}')
     ws.send('{"type":"subscribe","symbol":"KSPN"}')
     ws.send('{"type":"subscribe","symbol":"BTAI"}')
+    ws.send('{"type":"unsubscribe","symbol":"AAPL"}') # will be necessary
 
 if __name__ == "__main__":
     websocket.enableTrace(True)

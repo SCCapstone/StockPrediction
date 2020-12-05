@@ -25,7 +25,7 @@ SECRET_KEY = '$5)6v9#zg&p!l*h_o^3(208!r*j0*spe&^q(#_j-5_bn$39n$m'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['https://stock-prediction1.herokuapp.com/']
 
 
 # Application definition

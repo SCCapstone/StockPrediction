@@ -15,6 +15,8 @@ nltk = "*"
 matplotlib = "*"
 scipy = "*"
 keras = "*"
+websocket = "*"
+gunicorn = "*"
 
 [requires]
 python_version = "3.6"

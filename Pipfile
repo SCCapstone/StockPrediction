@@ -17,7 +17,7 @@ scipy = "*"
 keras = "*"
 websocket = "*"
 gunicorn = "*"
-pip = "*"
+pip = "20.3.1"
 
 [requires]
 python_version = "3.6"

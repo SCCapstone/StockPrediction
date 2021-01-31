@@ -8,6 +8,9 @@ The Stock Prediction web app is a Django web app where users can track stock mar
 
 At this moment we do not have a complete list of the necessary APIs and Libraries. We will add one as soon as possible. Here are the ones we have at the moment.
 *CURRENTLY USED:
+* React.js
+* Django Rest Framework (pip install djangorestframework)
+* Cors Headers (pip install django-cors-headers)
 * Stock Prices API: [Finnhub.io](https://finnhub.io/docs/api)
 * Historical data: investpy
 * Neural network: keras functional API

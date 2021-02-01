@@ -45,11 +45,11 @@ Internet. These should be detailed enough so anyone can re-deploy if needed
 
 Running tests:
 
-./manage.py test
+`./manage.py test`
 
 Location of tests:
 
-./stocks/tests.py
+`./stocks/tests.py`
 
 ## Testing Technology
 

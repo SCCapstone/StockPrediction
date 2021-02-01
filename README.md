@@ -43,12 +43,13 @@ Internet. These should be detailed enough so anyone can re-deploy if needed
 
 # Testing
 
-In 492 you will write automated tests. When you do you will need to add a 
-section that explains how to run them.
+Running tests:
 
-The unit tests are in `/test/unit`.
+./manage.py test
 
-The behavioral tests are in `/test/casper/`.
+Location of tests:
+
+./stocks/tests.py
 
 ## Testing Technology
 

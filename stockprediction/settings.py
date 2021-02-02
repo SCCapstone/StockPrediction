@@ -149,10 +149,13 @@ if DEBUG:
     DEFAULT_RENDERER_CLASSES += [
         'rest_framework.renderers.BrowsableAPIRenderer',
     ]
+#####################################################################
+# This is what you need to have uncommented to not get a 403 error if you are not logged in
+# We MUST get rid of this/comment it out when we deploy
     DEFAULT_AUTHENTICATION_CLASSES += [
          'stockprediction.rest_api.dev.DevAuthentication'
     ]
-
+#####################################################################
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': DEFAULT_AUTHENTICATION_CLASSES,
     'DEFAULT_RENDERER_CLASSES': DEFAULT_RENDERER_CLASSES,

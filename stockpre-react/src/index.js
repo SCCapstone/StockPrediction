@@ -9,7 +9,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { StockDetailComponent, StockListComponent } from './stocks'
 import { NavigationComponent } from './navigation'
 
-
+// This stuff creates new elements and attatches them to the javascript (React) code, as well as links them to the webpage
+// Probably dont need to do anything here
 const e = React.createElement
 
 const stocksListEl = document.getElementById('stocks-list')

@@ -22,6 +22,12 @@ class StockManager(models.Manager):
     def feed(self, user):
         return self.get_queryset().feed(user)
 '''
+#####################################################################
+#   IMPORTANT: Stock model is initialized before we even run the app
+#   theres more info in stockprediction/Readme.md
+#   basic model for a Stock, we can add more stuff if we want
+#   I considered adding a custom model manager and QuerySet to handle complex lookup
+#####################################################################
 class Stock(models.Model):
     ticker = models.CharField(max_length=5, null=True, blank=True)
     company_name = models.CharField(max_length=25, null=True, blank=True)

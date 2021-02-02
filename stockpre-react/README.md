@@ -1,3 +1,39 @@
+# Directions from miles
+
+### Folders
+
+* build - contains built React app, build/static will need to be imported over to /static, more directions below
+* public - contains index.html, must add div with 'id' or 'class' that connects to DOM element created in src/index.js
+    * index.html is the html file that will render when running React, is only for testing
+* src/lookup - used for making requests to our API, should not need to be messed with
+* src/navigation - contains the navbar components; search bar, home link and profile link
+* src/stocks - contains components for stock components; stock list, stock details
+
+### Directions and info
+
+#### index.js is what will handle connecting the javascript to DOM elements, each main component is created there, and attached to 
+#### an html 'id' or 'class', which are referenced on the html pages you wish to render the React components on
+
+#### In each folder within src (besides lookup), there is a lookup.js file which handles the urls of api endpoints
+#### Each folder within src also contains an 'index.js' file, which imports all the functions from the folder, and exports them all so the rest of the app can use
+
+#### running 'npm start' in react app directorywill start the development server. This will render public/index.html, 
+#### which should contain a <div> with 'id' or 'class' of 
+#### whichever component you are working on. Again these 'id' or 'class' will be in src/index.js
+
+#### When you would like to port the React app over to the main django app, here is what you must do
+
+* exit development server
+* run 'npm run build'
+* go to /static/ and delete the css and js directories
+* go to stockpre-react/build/static and copy the css and js directories into /static/
+* now run ./manage.py collectstatic
+* last step, go to /templates/react
+* css.html should have href=main.xxxxxx.chunk.css, make sure it is the same as the one in /static/css
+* js.html should have src=main.xxxxxxx.chunk.js and src=x.xxxxxx.chunk.js, same as the ones in /static/js
+* make sure relevant components are referenced correctly in html templates with the right 'id' or 'class'
+* run django server
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

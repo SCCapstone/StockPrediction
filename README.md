@@ -18,22 +18,31 @@ At this moment we do not have a complete list of the necessary APIs and Librarie
 * Google Trends API: [pytrends](https://pypi.org/project/pytrends/)
 * Task Management: [Celery](https://docs.celeryproject.org/en/stable/index.html)
 * Message Broker [RabbitMQ](https://www.rabbitmq.com/documentation.html)
+* requests
+* websocket_client
 
 ## Setup
-
-First you will need to install RabbitMQ. This is the message broker that we use to schedule tasks. [Download](https://www.rabbitmq.com/download.html).
-
-Additionally, you'll need to get an API key from Finnhub.io. [Key](https://finnhub.io/).
 
 Then, navigate to the root directory of the project. And run:
 
 `pipenv install`
 
 This will install all of the required Python modules.
+Activate the virtual environment with
+
+`pipenv shell`
+
+Next run all migrations for database with
+
+`./manage.py makemigrations`
+
+and apply them
+
+`./manage.py migrate`
 
 ## Running
 
-`manage.py runserver`
+`./manage.py runserver`
 
 # Deployment
 

@@ -26,6 +26,7 @@ At this moment we do not have a complete list of the necessary APIs and Librarie
 #### If you've already cloned/pulled:
 Run `pipenv update` to sync the pipfile, then install and shell
 
+### Regardless
 Navigate to the root directory of the project. And run:
 
 `pipenv install`
@@ -42,6 +43,7 @@ Next run all migrations for database with
 and apply them
 
 `./manage.py migrate`
+#### If you are getting issues with the python version, make sure your ide is using the pipenv interpreter
 
 ## Running
 

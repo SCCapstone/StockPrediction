@@ -1,6 +1,6 @@
 # Structure of code
 
-## *Setup if you've cloned/pulled before 70f7691
+## *Setup if you've cloned/pulled before commit 70f7691
 Added new migration file in /stocks/migrations. It populates the table with tickers and stock names, so run the migrations when you startup again.
 #### *It may ask if you want to merge the migrations, say yes*
 

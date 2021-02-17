@@ -23,7 +23,10 @@ At this moment we do not have a complete list of the necessary APIs and Librarie
 
 ## Setup
 
-Then, navigate to the root directory of the project. And run:
+#### If you've already cloned/pulled:
+Run `pipenv update` to sync the pipfile, then install and shell
+
+Navigate to the root directory of the project. And run:
 
 `pipenv install`
 

@@ -1,3 +1,5 @@
+from django.db.models import Q
+
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
@@ -36,8 +38,10 @@ def stock_list_api_view(request, *args, **kwargs):
 def stock_search_api_view(request, *args, **kwargs):
     #Get the term that is in the input field of search bar, sent back as context by react
     term = request.data.get('searchTerm')
-    #Filter by which tickers contain the term, only get the first 10, will want to check company names in the future
-    qs = Stock.objects.filter(ticker__icontains=term).distinct()[:10]
+    #Filter by which tickers/company names contain the term, only get the first 10
+    qs = Stock.objects.filter(
+        Q(ticker__iexact=term) | Q(ticker__icontains=term) | Q(company_name__icontains=term)
+    ).distinct()[:10]
     serializer = StockSerializer(qs, many=True)
     return Response(serializer.data, status=200)
 

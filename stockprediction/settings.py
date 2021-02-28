@@ -83,8 +83,12 @@ WSGI_APPLICATION = 'stockprediction.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'de3b1fg2ijqk5c',
+        'HOST': 'ec2-52-206-15-227.compute-1.amazonaws.com',
+        'PORT': 5432,
+        'USER': 'oyoxrxvkkwptab',
+        'PASSWORD': 'ff2b5a59d12bc66a0513304622e2b118cabb2e4a2324293de402349e2829ff64'
     }
 }
 
@@ -160,7 +164,3 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': DEFAULT_AUTHENTICATION_CLASSES,
     'DEFAULT_RENDERER_CLASSES': DEFAULT_RENDERER_CLASSES,
 }
-
-if 'DATABASE_URL' in os.environ:
-    import dj_database_url
-    DATABASES = {'default': dj_database_url.config()}

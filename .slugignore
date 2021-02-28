@@ -1,2 +1,5 @@
 # Files to be ignored
 *.pdf
+*.png
+*.svg
+*.md

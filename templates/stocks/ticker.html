@@ -1,0 +1,39 @@
+{% extends 'base.html' %} 
+
+{% block content %}
+
+<div id='navbar'></div>
+<div
+    class='stock-detail'
+    data-tickerinit='{{ ticker }}'
+></div>
+    <!-- TradingView Widget BEGIN -->
+<div class="tradingview-widget-container">
+    <div id="tradingview_350d5"></div>
+    <div class="tradingview-widget-copyright">
+        <a href="https://www.tradingview.com/symbols/{{ ticker }}/" rel="noopener" target="_blank">
+            <span class="blue-text">{{ ticker }} Chart</span>
+        </a> by TradingView</div>
+    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+    <script type="text/javascript">
+    new TradingView.widget(
+    {
+    "width": 980,
+    "height": 610,
+    "symbol": "{{ ticker }}",
+    "interval": "D",
+    "timezone": "Etc/UTC",
+    "theme": "light",
+    "style": "1",
+    "locale": "en",
+    "toolbar_bg": "#f1f3f6",
+    "enable_publishing": false,
+    "allow_symbol_change": true,
+    "container_id": "tradingview_350d5"
+  }
+    );
+    </script>
+  </div>
+  <!-- TradingView Widget END -->
+
+{% endblock content %}

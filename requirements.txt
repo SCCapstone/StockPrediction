@@ -6,6 +6,7 @@ certifi==2020.11.8
 chardet==3.0.4
 click==7.1.2
 cycler==0.10.0
+dj-database-url==0.5.0
 gast==0.3.3
 gevent==20.9.0
 google-auth==1.23.0

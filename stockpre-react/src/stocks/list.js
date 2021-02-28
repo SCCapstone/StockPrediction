@@ -32,7 +32,7 @@ export function StockList(props) {
     }
   }, [stocksInit, stocksDidSet, setStocksDidSet])
   //If stocks list is not emptpy, render a list of stock links
-  return <div>List will turn into list of widgets, prediction next to each ticker
+  return <div>Predictions and Proper Routing to be added
           {stocks !== null && 
             stocks.map( (item, index) => ( 
               <StockLink key={index} stock={item} /> 

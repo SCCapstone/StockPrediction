@@ -8,6 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { StockDetailComponent, StockListComponent } from './stocks'
 import { NavigationComponent } from './navigation'
+import { WelcomeMsg } from './navigation/components';
 
 // This stuff creates new elements and attatches them to the javascript (React) code, as well as links them to the webpage
 // Probably dont need to do anything here
@@ -29,6 +30,13 @@ stockDetailElements.forEach(container => {
     e(StockDetailComponent, container.dataset),
     container);
 })
+
+const welcomeMessage = document.getElementById("welcome")
+if (welcomeMessage) {
+  ReactDOM.render(e(WelcomeMsg, welcomeMessage.dataset), welcomeMessage)
+}
+
+
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

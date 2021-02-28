@@ -24,13 +24,15 @@ export function Stock(props) {
         "save_image": false,
         "container_id": "tradingview_29472"
         });`
-        const script = document.body.appendChild(script1);
-        script.appendChild(script2);
+        script1.appendChild(script2);
+        document.body.appendChild(script1);
         return () => {
-            document.body.removeChild(script2);
+            try {
+            script1.removeChild(script2);
             document.body.removeChild(script1);
+            } catch {}
         }
-    });
+    }, []);
     return <div class="tradingview-widget-container" style={{padding: 40 + 'px'}}>
         <div id="tradingview_29472"></div>
         <div class="tradingview-widget-copyright">

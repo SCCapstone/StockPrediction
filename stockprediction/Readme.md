@@ -1,5 +1,9 @@
 # Structure of code
 
+## *Setup if you've cloned/pulled before commit 70f7691
+Added new migration file in /stocks/migrations. It populates the table with tickers and stock names, so run the migrations when you startup again.
+#### *It may ask if you want to merge the migrations, say yes*
+
 ### Each relevant folder will have its own documentation in there as well
 
 #### '/' will be root directory for project
@@ -43,9 +47,5 @@
 ## Important miscellaneous info
 
 ### When you start up, you will have to navigate to /register to create an account, then /login to log yourself in. then go to /
-
-### I populated the 'Stock' table from the shell, so they would all be initialized with tickers. This is the only real way I could think of 
-### doing a good search, so I will have to write some code to do that automatically for you guys, but I reccommend using the shell and tickers.csv
-### to initialize a database of 'Stock' objects. that is what i did, it just does not push to github
 
 ### if you get a 403 error, go into settings and scroll to the bottom, theres some info of what to do there.

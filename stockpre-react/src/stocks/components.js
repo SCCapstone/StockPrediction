@@ -12,8 +12,34 @@ export function StockLink (props) {
     event.preventDefault()
     window.location.href = `/stocks/${stock.ticker}`
   }
-  return <div onClick={handleStockLink}>{stock.ticker}</div> 
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.type = "text/javascript";
+    script.src = "https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js";
+    script.async = true;
+    script.innerHTML = `{
+      "symbol": "NASDAQ:${stock.ticker}",
+      "width": 350,
+      "colorTheme": "light",
+      "isTransparent": false,
+      "locale": "en"
+    }`
+    document.body.appendChild(script);
+    return () => {
+      document.body.removeChild(script);
+    }
+  })
+  return <div onClick={handleStockLink} class='tradingview-widget-container'>
+    <div class="tradingview-widget-container__widget"></div>
+    </div>;
 }
+/*
+<div class="tradingview-widget-copyright">
+      <a href={`https://www.tradingview.com/symbols/NASDAQ-${stock.ticker}/`} rel="noopener" target="_blank">
+        <span class="blue-text">{stock.ticker} Price Today</span>
+      </a> by TradingView
+    </div>
+*/
 
 //Wrapper for stock list, handleNewStock is a callback for if a stock is added
 //While on stock page, but is not required right now

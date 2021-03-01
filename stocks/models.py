@@ -29,8 +29,8 @@ class StockManager(models.Manager):
 #   I considered adding a custom model manager and QuerySet to handle complex lookup
 #####################################################################
 class Stock(models.Model):
-    ticker = models.CharField(max_length=5, null=True, blank=True)
-    company_name = models.CharField(max_length=25, null=True, blank=True)
+    ticker = models.CharField(max_length=255, null=True, blank=True)
+    company_name = models.CharField(max_length=255, null=True, blank=True)
     tracked_by = models.ManyToManyField(User, related_name='tracking', blank=True)
     
     #objects = StockManager()

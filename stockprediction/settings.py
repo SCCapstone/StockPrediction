@@ -23,9 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'vh!b=kbd*k$*!!+ql#$%=jy@*6k3t_vx7jo+@x-#mb*n&*f)b#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'stock-prediction1.herokuapp.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'stock-prediction1.herokuapp.com', '.herokuapp.com']
 LOGIN_URL = '/login'
 
 
@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'rest_framework',
     # Internal
     'stocks',
-    'prediction',
+    'prediction'
 ]
 
 MIDDLEWARE = [
@@ -83,12 +83,8 @@ WSGI_APPLICATION = 'stockprediction.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'de3b1fg2ijqk5c',
-        'HOST': 'ec2-52-206-15-227.compute-1.amazonaws.com',
-        'PORT': 5432,
-        'USER': 'oyoxrxvkkwptab',
-        'PASSWORD': 'ff2b5a59d12bc66a0513304622e2b118cabb2e4a2324293de402349e2829ff64'
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
@@ -164,3 +160,6 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': DEFAULT_AUTHENTICATION_CLASSES,
     'DEFAULT_RENDERER_CLASSES': DEFAULT_RENDERER_CLASSES,
 }
+
+import django_heroku
+django_heroku.settings(locals())

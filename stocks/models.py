@@ -30,7 +30,7 @@ class StockManager(models.Manager):
 #####################################################################
 class Stock(models.Model):
     ticker = models.CharField(max_length=5, null=True, blank=True)
-    company_name = models.CharField(max_length=25, null=True, blank=True)
+    company_name = models.CharField(max_length=100, null=True, blank=True)
     tracked_by = models.ManyToManyField(User, related_name='tracking', blank=True)
     
     #objects = StockManager()

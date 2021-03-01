@@ -9,6 +9,8 @@ django-cors-headers = "*"
 djangorestframework = "*"
 requests = "*"
 websocket = "*"
+psycopg2 = "*"
+gunicorn = "*"
 
 [dev-packages]
 

@@ -33,5 +33,6 @@ class Stock(models.Model):
     company_name = models.CharField(max_length=255, null=True, blank=True)
     tracked_by = models.ManyToManyField(User, related_name='tracking', blank=True)
     dummy = models.CharField(max_length=255, blank=True)
+    dummy2 = models.CharField(max_length=255, blank=True)
     
     #objects = StockManager()

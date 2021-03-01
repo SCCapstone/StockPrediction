@@ -32,7 +32,7 @@ from django.contrib.auth.models import User #Django base user
 
 class Prediction(models.Model):
 
-    ticker = models.CharField(max_length=50)
+    ticker = models.CharField()
 
     #name = models.CharField(max_length=30)
 
@@ -50,4 +50,4 @@ class Prediction(models.Model):
 ############################################
 class Ticker(models.Model):
 
-    symbol = models.CharField(max_length=10)
+    symbol = models.CharField()

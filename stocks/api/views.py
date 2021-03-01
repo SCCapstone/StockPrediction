@@ -38,6 +38,8 @@ def stock_list_api_view(request, *args, **kwargs):
 def stock_search_api_view(request, *args, **kwargs):
     #Get the term that is in the input field of search bar, sent back as context by react
     term = request.data.get('searchTerm')
+    if not term:
+        term = ''
     #Filter by which tickers/company names contain the term, only get the first 10
     qs = Stock.objects.filter(
         Q(ticker__iexact=term) | Q(ticker__icontains=term) | Q(company_name__icontains=term)

@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 const HOSTNAME = "stock-prediction1.herokuapp.com/api";
+=======
+import HOSTNAME from '../ENV';
+
+>>>>>>> 9d8dbcb7537f215d98a175d9adcd58088b44366e
 function getCookie(name) {
   let cookieValue = null;
   if (document.cookie && document.cookie !== "") {
@@ -12,6 +17,7 @@ function getCookie(name) {
       }
     }
   }
+<<<<<<< HEAD
   return cookieValue;
 }
 
@@ -37,6 +43,32 @@ export function backendlookup(method, endpoint, callback, data) {
       if (detail === "Authentication credentials were not provided.") {
         if (window.location.href.indexOf("login") === -1) {
           window.location.href = "/login?showLoginRequired=true";
+=======
+  
+  export function backendlookup(method, endpoint, callback, data) {
+    let jsonData;
+    if (data) {
+      jsonData = JSON.stringify(data)
+    }
+    const xhr = new XMLHttpRequest()
+    const url = `${HOSTNAME}${endpoint}`
+    xhr.responseType = 'json'
+    const csrftoken = getCookie('csrftoken')
+    xhr.open(method, url)
+    xhr.setRequestHeader('Content-Type', 'application/json')
+    if (csrftoken) {
+      xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest')
+      xhr.setRequestHeader('X-CSRFToken', csrftoken)
+    }
+  
+    xhr.onload = function() {
+      if (xhr.status === 403) {
+        const detail = xhr.response.detail
+        if (detail === "Authentication credentials were not provided.") {
+          if (window.location.href.indexOf("login") === -1) {
+            window.location.href = "/login?showLoginRequired=true"
+          }
+>>>>>>> 9d8dbcb7537f215d98a175d9adcd58088b44366e
         }
       }
     }

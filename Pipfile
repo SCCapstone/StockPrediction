@@ -11,6 +11,7 @@ requests = "*"
 websocket = "*"
 psycopg2 = "*"
 gunicorn = "*"
+django-heroku = "*"
 
 [dev-packages]
 

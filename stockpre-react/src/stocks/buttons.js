@@ -13,5 +13,5 @@ export function ActionButton (props) {
     }
     const display = isTracking === true ? 'Remove' : 'Add' //basic display logic for add or remove, so we can just have one button instead of 2
     // renders prediction button if 'predict' prop has been set, if not render add/remove button
-    return predict === true ? <button className="btn btn-primary mr-3" onClick={handleClick}>Get Prediction</button> : <button className="btn btn-danger" onClick={handleClick}> {display} </button>
+    return predict === true ? <button onClick={handleClick}>Get Prediction</button> : <button onClick={handleClick}> {display} </button>
 }

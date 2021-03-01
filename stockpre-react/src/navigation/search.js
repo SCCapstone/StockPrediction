@@ -12,9 +12,6 @@ export function StockSearchComponent (props) {
     const handleSearchTermChange = (event) => {
       setSearchTerm(event.target.value)
     }
-    const searchStock = (event) => {
-      window.location.href = `/stocks/${searchTerm.toUpperCase()}`
-    }
   
     //Called when anything changes on this component, ie handles lookup for when you modify the search term
     useEffect(() => {
@@ -30,19 +27,12 @@ export function StockSearchComponent (props) {
     
     // Input for search, as well as list of search results, all of which are links respectively, rendering
     // If the search term in not nothing, so nothing renders if you dont type stuff in
-    return <form className="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-      <div className="input-group">
-      <input list="stocks" type="text" className="form-control bg-light border-0 small" placeholder="Search tickers" value={searchTerm} onChange={handleSearchTermChange} />
-      <div className="input-group-append">
-                  <button className="btn btn-primary" type="button" onClick={searchStock}>
-                    <i className="fas fa-search fa-sm">Search</i>
-                  </button></div>
-      {searchTerm !== "" && <datalist className="navbar-nav" id="stocks">
+    return <div>Need To not have list push rest of page around, will be able to search company names
+      <input type="text" placeholder="Search tickers" value={searchTerm} onChange={handleSearchTermChange} />
+      {searchTerm !== "" && <ul>
         {searchResults.map( (item, index) => (
-          <option key={index} value={item}/>
+          <li><StockLink stock={item} key={item.id} /></li>
         ))}
-      </datalist>
-      }
-      </div>
-    </form>
+      </ul>}
+    </div>
   }

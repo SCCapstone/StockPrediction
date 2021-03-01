@@ -26,16 +26,12 @@ export function StockLink (props) {
     }`
     document.body.appendChild(script);
     return () => {
-      try {
-        document.body.removeChild(script);
-      } catch {
-        console.log("Failed")
-      }
+      document.body.removeChild(script);
     }
   })
-  return <div onClick={handleStockLink}><div class='tradingview-widget-container'>
+  return <div onClick={handleStockLink} class='tradingview-widget-container'>
     <div class="tradingview-widget-container__widget"></div>
-    </div></div>;
+    </div>;
 }
 /*
 <div class="tradingview-widget-copyright">

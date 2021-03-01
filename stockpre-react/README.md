@@ -25,7 +25,7 @@
 
 * exit development server
 * run 'npm run build'
-* go to /static/ and delete the css and js directories EXCEPT THE BOOTSTRAP FILES
+* go to /static/ and delete the css and js directories
 * go to stockpre-react/build/static and copy the css and js directories into /static/
 * now run ./manage.py collectstatic
 * last step, go to /templates/react

@@ -1,0 +1,17 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django = "*"
+django-cors-headers = "*"
+djangorestframework = "*"
+gunicorn = "*"
+psycopg2-binary = "*"
+django-heroku = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.7"

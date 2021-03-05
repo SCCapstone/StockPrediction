@@ -25,30 +25,25 @@ export function StockSearchComponent(props) {
 
   return (
     <form className="d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-      <div
-        className="input-group"
-        onBlur={() => {
-          setShowResults(false);
-        }}
-      >
+      <div className="input-group" onFocus={() => setShowResults(true)}>
         <input
           type="text"
           className="form-control bg-light border-0 small z-index:10"
           placeholder="Search tickers"
           value={searchTerm}
           onChange={handleSearchTermChange}
-          onFocus={() => setShowResults(true)}
-          // onBlur={() => setShowResults(false)}
         />
-        {searchTerm !== "" && showResults && (
-          <ul className="position-absolute mt-5 border border-light">
-            {searchResults.map((item) => (
-              <li key={item.id}>
-                <StockLink stock={item} />
-              </li>
-            ))}
-          </ul>
-        )}
+        <div className="position-absolute mt-5 border border-light bg-light">
+          {searchTerm !== "" && showResults && (
+            <ul>
+              {searchResults.map((item) => (
+                <li key={item.id}>
+                  <StockLink stock={item} />
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </div>
     </form>
   );

@@ -16,8 +16,10 @@ export function StockSearchComponent(props) {
     const handleSearchTermLookup = (response, status) => {
       if (status === 200) {
         setSearchResults([...response]);
+      } else if (status === 403) {
+        alert("Unauthorized, must login to access");
       } else {
-        alert("Error finding stock");
+        alert("Error finding stock, status:", status);
       }
     };
     apiStockSearch(searchTerm, handleSearchTermLookup);

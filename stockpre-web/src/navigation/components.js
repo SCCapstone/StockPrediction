@@ -38,9 +38,13 @@ function HomeLink(props) {
     event.preventDefault();
     window.location.href = "/";
   };
-  return <span onClick={handleHomeLink}>HomeLink</span>;
+  return <span onClick={handleHomeLink}>Home</span>;
 }
 
 function ProfileLink(props) {
-  return <span>ProfileLink *useless right now*</span>;
+  const handleProfileLink = (event) => {
+    event.preventDefault();
+    window.location.href = "/profile";
+  };
+  return <span onClick={handleProfileLink}>Profile</span>;
 }

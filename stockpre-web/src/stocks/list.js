@@ -22,6 +22,8 @@ export function StockList(props) {
         if (status === 200) {
           setStocksInit([...response]);
           setStocksDidSet(true);
+        } else {
+          alert("Error, status:", status);
         }
       };
       apiStockList(handleStockListLookup);
@@ -30,7 +32,6 @@ export function StockList(props) {
 
   return (
     <div>
-      List will turn into list of widgets, prediction next to each ticker
       {stocks !== null &&
         stocks.map((item, index) => <StockLink key={index} stock={item} />)}
     </div>

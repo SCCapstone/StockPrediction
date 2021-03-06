@@ -30,7 +30,7 @@ export function StockLink(props) {
     };
   });
   return (
-    <div onClick={handleStockLink} class="tradingview-widget-container">
+    <div class="tradingview-widget-container">
       <div class="tradingview-widget-container__widget"></div>
     </div>
   );
@@ -90,7 +90,7 @@ export function StockDetailComponent(props) {
       setPrediction(response.future_value);
       setHasPrediction(true);
     } else {
-      alert("cant add/remove");
+      alert("cant add/remove, status:", status);
     }
   };
 

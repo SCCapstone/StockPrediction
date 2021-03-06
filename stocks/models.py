@@ -23,9 +23,11 @@ class StockManager(models.Manager):
         return self.get_queryset().feed(user)
 '''
 
+
 class Stock(models.Model):
     ticker = models.CharField(max_length=255, null=True, blank=True)
     company_name = models.CharField(max_length=255, null=True, blank=True)
-    tracked_by = models.ManyToManyField(User, related_name='tracking', blank=True)
-    
+    tracked_by = models.ManyToManyField(
+        User, related_name='tracking', blank=True)
+
     #objects = StockManager()

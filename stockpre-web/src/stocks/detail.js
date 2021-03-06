@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 //Simple component all it does is display the ticker for a stock
 export function Stock(props) {
   const { ticker } = props;
-  console.log(ticker);
   return <div>{ticker}</div>;
   // useEffect(() => {
   //   const script1 = document.createElement("script");

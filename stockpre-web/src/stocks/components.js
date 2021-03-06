@@ -70,7 +70,18 @@ export function StockDetailComponent(props) {
 
   const handleBackendPredictionLookup = (response, status) => {
     if (status === 200) {
-      setPrediction(response.future_value);
+      console.log(response);
+      const responsePrediction = response.prediction;
+      const newPrediction =
+        responsePrediction !== {}
+          ? {
+              future_value: responsePrediction.future_value,
+              upper_value: responsePrediction.upper_value,
+              lower_value: responsePrediction.lower_value,
+              prediction_date: response.prediction_date,
+            }
+          : null;
+      setPrediction(newPrediction);
       setHasPrediction(true);
       setDidPredictionLookup(true);
     } else {
@@ -83,11 +94,19 @@ export function StockDetailComponent(props) {
       setIsTracking(false);
       setHasPrediction(false);
       setPrediction(null);
-      //setTicker(response.ticker)
+      setTicker(response.ticker);
     } else if (status === 200 && !isTracking) {
       setIsTracking(true);
     } else if (status === 201 && isTracking) {
-      setPrediction(response.future_value);
+      console.log("New pred", response);
+      const prediction = response.prediction;
+      const newPrediction = {
+        future_value: prediction.future_value,
+        upper_value: prediction.upper_value,
+        lower_value: prediction.lower_value,
+        prediction_date: response.prediction_date,
+      };
+      setPrediction(newPrediction);
       setHasPrediction(true);
     } else {
       alert("cant add/remove, status:", status);
@@ -141,5 +160,10 @@ function PredictionComponent(props) {
     }
   });
 
-  return prediction !== null ? <div>Prediction: {prediction}</div> : null;
+  return prediction !== null ? (
+    <div>
+      Prediction: {prediction.future_value} Range: {prediction.lower_value} -{" "}
+      {prediction.upper_value} on {prediction.prediction_date}
+    </div>
+  ) : null;
 }

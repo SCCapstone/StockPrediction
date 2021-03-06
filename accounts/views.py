@@ -4,31 +4,37 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 
 
 def login_view(request, *args, **kwargs):
-    form = AuthenticationForm(request, data=request.POST or None)
-    if form.is_valid():
-        user_ = form.get_user()
-        login(request, user_)
+    if not request.user.is_authenticated:
+        form = AuthenticationForm(request, data=request.POST or None)
+        if form.is_valid():
+            user_ = form.get_user()
+            login(request, user_)
+            return redirect("/")
+        context = {
+            "form": form,
+            "btn_label": "Login",
+            "title": "Login",
+            "extras": "Don't have an account? Click here to make one",
+        }
+        return render(request, "accounts/auth.html", context)
+    else:
         return redirect("/")
-    context = {
-        "form": form,
-        "btn_label": "Login",
-        "title": "Login",
-        "extras": "Don't have an account? Click here to make one",
-    }
-    return render(request, "accounts/auth.html", context)
 
 
 def logout_view(request, *args, **kwargs):
-    if request.method == "POST":
-        logout(request)
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            logout(request)
+            return redirect("/login")
+        context = {
+            "form": None,
+            "description": "Are you sure you want to logout?",
+            "btn_label": "Click to confirm logout",
+            "title": "Logout"
+        }
+        return render(request, "accounts/auth.html", context)
+    else:
         return redirect("/login")
-    context = {
-        "form": None,
-        "description": "Are you sure you want to logout?",
-        "btn_label": "Click to confirm logout",
-        "title": "Logout"
-    }
-    return render(request, "accounts/auth.html", context)
 
 
 def register_view(request, *args, **kwargs):

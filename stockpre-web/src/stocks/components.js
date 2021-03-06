@@ -70,10 +70,9 @@ export function StockDetailComponent(props) {
 
   const handleBackendPredictionLookup = (response, status) => {
     if (status === 200) {
-      console.log(response);
       const responsePrediction = response.prediction;
       const newPrediction =
-        responsePrediction !== {}
+        responsePrediction !== null
           ? {
               future_value: responsePrediction.future_value,
               upper_value: responsePrediction.upper_value,

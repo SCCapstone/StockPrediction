@@ -23,7 +23,7 @@ def prediction_detail_api_view(request, *args, **kwargs):
     user = request.user
     qs = Prediction.objects.filter(owner=user, stock__ticker=ticker)
     if not qs.exists():
-        return Response({"prediction": {}}, status=200)
+        return Response({"prediction": None}, status=200)
     prediction_obj = qs.first()
     serializer = PredictionSerializer(instance=prediction_obj)
     return Response(serializer.data, status=200)

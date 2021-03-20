@@ -5,11 +5,12 @@ import { Stock } from "./detail";
 import { StockList } from "./list";
 import { ActionButton } from "./buttons";
 
+// Shows singe quote and prediction. Routes to detailed view
 export function StockLink(props) {
   const { stock } = props;
   const handleStockLink = (event) => {
     event.preventDefault();
-    window.location.href = `/stocks/${stock.ticker}`;
+    window.location.href = `/stocks/${stock.ticker.toUpperCase()}`;
   };
   useEffect(() => {
     const script = document.createElement("script");
@@ -161,8 +162,8 @@ function PredictionComponent(props) {
 
   return prediction !== null ? (
     <div>
-      Prediction: {prediction.future_value} Range: {prediction.lower_value} -{" "}
-      {prediction.upper_value} on {prediction.prediction_date}
+      Prediction: {prediction.future_value.toFixed(2)} Range: {prediction.lower_value.toFixed(2)} -{" "}
+      {prediction.upper_value.toFixed(2)} on {prediction.prediction_date}
     </div>
   ) : null;
 }

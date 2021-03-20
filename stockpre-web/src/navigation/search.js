@@ -34,18 +34,13 @@ export function StockSearchComponent(props) {
           placeholder="Search tickers"
           value={searchTerm}
           onChange={handleSearchTermChange}
+          list="list"
         />
-        <div className="position-absolute mt-5 border border-light bg-light">
-          {searchTerm !== "" && showResults && (
-            <ul>
-              {searchResults.map((item) => (
-                <li key={item.id}>
-                  <StockLink stock={item} />
-                </li>
+        <datalist id="list" className="position-absolute mt-5 border border-light bg-light">
+          {searchTerm !== "" && showResults && searchResults.map((item) => (
+                  <option value={item} />
               ))}
-            </ul>
-          )}
-        </div>
+        </datalist>
       </div>
     </form>
   );

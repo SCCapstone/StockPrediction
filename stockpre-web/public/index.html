@@ -19,11 +19,14 @@
       integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
       crossorigin="anonymous"
     />
-
+    <script src="%PUBLIC_URL%/datafeeds/udf/dist/polyfills.js"></script> <!--TRADINGVIEW-->
+		<script src="%PUBLIC_URL%/datafeeds/udf/dist/bundle.js"></script> <!--TRADINGVIEW-->
     <title>Stock Prediction</title>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="navbar"></div>
     <div class="stock-detail" data-tickerinit="AAPL"></div>
+    <div id="stocks-list"></div>
   </body>
 </html>

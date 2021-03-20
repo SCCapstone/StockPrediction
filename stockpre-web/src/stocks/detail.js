@@ -1,49 +1,85 @@
-import React, { useEffect } from "react";
-//Simple component all it does is display the ticker for a stock
-export function Stock(props) {
-  const { ticker } = props;
-  return <div>{ticker}</div>;
-  // useEffect(() => {
-  //   const script1 = document.createElement("script");
-  //   script1.type = "text/javascript";
-  //   script1.src = "https://s3.tradingview.com/tv.js";
-  //   const script2 = document.createElement("script");
-  //   script2.type = "text/javascript";
-  //   script2.innerHTML = `new TradingView.widget({
-  //       "autosize": true,
-  //       "symbol": "${ticker}",
-  //       "interval": "D",
-  //       "timezone": "Etc/UTC",
-  //       "theme": "light",
-  //       "style": "1",
-  //       "locale": "en",
-  //       "toolbar_bg": "#f1f3f6",
-  //       "enable_publishing": false,
-  //       "hide_top_toolbar": true,
-  //       "hide_legend": true,
-  //       "save_image": false,
-  //       "container_id": "tradingview_29472"
-  //       });`;
-  //   const script = document.body.appendChild(script1);
-  //   script.appendChild(script2);
-  //   return () => {
-  //     document.body.removeChild(script2);
-  //     document.body.removeChild(script1);
-  //   };
-  // });
-  // return (
-  //   <div class="tradingview-widget-container" style={{ padding: 40 + "px" }}>
-  //     <div id="tradingview_29472"></div>
-  //     <div class="tradingview-widget-copyright">
-  //       <a
-  //         href={`https://www.tradingview.com/symbols/${ticker}/`}
-  //         rel="noopener"
-  //         target="_blank"
-  //       >
-  //         <span class="blue-text">{ticker} Chart</span>
-  //       </a>{" "}
-  //       by TradingView
-  //     </div>
-  //   </div>
-  // );
+import * as React from 'react';
+import { widget } from '../charting_library';
+
+function getLanguageFromURL() {
+	const regex = new RegExp('[\\?&]lang=([^&#]*)');
+	const results = regex.exec(window.location.search);
+	return results === null ? null : decodeURIComponent(results[1].replace(/\+/g, ' '));
+}
+
+export class Stock extends React.PureComponent {
+	static defaultProps = {
+		symbol: 'AAPL',
+		interval: 'D',
+		containerId: 'tv_chart_container',
+		datafeedUrl: 'https://demo_feed.tradingview.com',
+		libraryPath: '/charting_library/',
+		chartsStorageUrl: 'https://saveload.tradingview.com',
+		chartsStorageApiVersion: '1.1',
+		clientId: 'tradingview.com',
+		userId: 'public_user_id',
+		fullscreen: false,
+		autosize: false,
+		studiesOverrides: {},
+	};
+
+	tvWidget = null;
+
+	componentDidMount() {
+		const widgetOptions = {
+			symbol: this.props.symbol,
+			// BEWARE: no trailing slash is expected in feed URL
+			datafeed: new window.Datafeeds.UDFCompatibleDatafeed(this.props.datafeedUrl),
+			interval: this.props.interval,
+			container_id: this.props.containerId,
+			library_path: this.props.libraryPath,
+
+			locale: getLanguageFromURL() || 'en',
+			disabled_features: ['use_localstorage_for_settings'],
+			enabled_features: ['hide_left_toolbar_by_default','study_templates'],
+			charts_storage_url: this.props.chartsStorageUrl,
+			charts_storage_api_version: this.props.chartsStorageApiVersion,
+			client_id: this.props.clientId,
+			user_id: this.props.userId,
+			fullscreen: this.props.fullscreen,
+			autosize: this.props.autosize,
+			studies_overrides: this.props.studiesOverrides,
+		};
+
+		const tvWidget = new widget(widgetOptions);
+		this.tvWidget = tvWidget;
+
+		tvWidget.onChartReady(() => {
+			tvWidget.headerReady().then(() => {
+				const button = tvWidget.createButton();
+				button.setAttribute('title', 'Click to show a notification popup');
+				button.classList.add('apply-common-tooltip');
+				button.addEventListener('click', () => tvWidget.showNoticeDialog({
+					title: 'Notification',
+					body: 'TradingView Charting Library API works correctly',
+					callback: () => {
+						console.log('Noticed!');
+					},
+				}));
+
+				button.innerHTML = 'Check API';
+			});
+		});
+	}
+
+	componentWillUnmount() {
+		if (this.tvWidget !== null) {
+			this.tvWidget.remove();
+			this.tvWidget = null;
+		}
+	}
+
+	render() {
+		return (
+			<div
+				id={ this.props.containerId }
+				className={ 'TVChartContainer' }
+			/>
+		);
+	}
 }

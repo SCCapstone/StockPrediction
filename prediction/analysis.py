@@ -162,7 +162,7 @@ def get_prediction(ticker):
     lower_value = prediction * lower
     return (prediction, upper_value, lower_value)
     '''
-    price_map = DataCollection.request_historical(ticker)
+    price_map = Data.toFixed(2)Collection.request_historical(ticker)
     volumes = price_map['v']
     opens = price_map['o']
     highs = price_map['h']

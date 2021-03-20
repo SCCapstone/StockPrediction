@@ -7,8 +7,10 @@ name = "pypi"
 django = "*"
 django-cors-headers = "*"
 djangorestframework = "*"
-requests = "*"
-websocket = "*"
+gunicorn = "*"
+psycopg2-binary = "*"
+django-heroku = "*"
+investpy = "*"
 
 [dev-packages]
 

@@ -5,15 +5,13 @@ from stocks.models import Stock
 
 User = settings.AUTH_USER_MODEL
 
-#####################################################################
-# Model for Prediction
-# I decided to break up the prediction and stock models because they are fundementally different
-# A prediction basically has a one to one relationship with a stock-user pair,
-# so a user may track a stock, and they have their own unique prediction for that stock
-# upon untracking, the prediction is deleted
-# open to ideas here for sure, i feel like this was best
-#####################################################################
+
 class Prediction(models.Model):
     future_value = models.DecimalField(max_digits=10, decimal_places=2)
+    upper_value = models.DecimalField(
+        max_digits=10, decimal_places=2, default=0)
+    lower_value = models.DecimalField(
+        max_digits=10, decimal_places=2, default=0)
+    prediction_date = models.CharField(max_length=255, null=True, blank=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     stock = models.ForeignKey(Stock, on_delete=models.CASCADE)

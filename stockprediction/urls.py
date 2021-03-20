@@ -22,6 +22,7 @@ from accounts.views import (
     login_view,
     logout_view,
     register_view,
+    profile_view,
 )
 
 from stocks.views import (
@@ -35,6 +36,7 @@ urlpatterns = [
     path('login/', login_view),
     path('logout/', logout_view),
     path('register/', register_view),
+    path('profile/', profile_view),
     path('stocks/<str:ticker>', stock_detail_view),
     path('api/stocks/', include('stocks.api.urls')),
     path('api/prediction/', include('prediction.api.urls'))
@@ -42,4 +44,4 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL,
-                    document_root=settings.STATIC_ROOT)
+                          document_root=settings.STATIC_ROOT)

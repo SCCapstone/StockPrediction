@@ -2,11 +2,7 @@
 
 {% block content %}
 
-{% if request.user.is_authenticated %}
-    <div id='navbar'></div>
-    <div id='stocks-list'></div>
-{% else %}
-    <h1>Go to /login to login or /register to register</h1>
-{% endif %}
+<div id='navbar'></div>
+<div id='stocks-list'></div>
 
 {% endblock content %}

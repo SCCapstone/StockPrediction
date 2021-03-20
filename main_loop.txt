@@ -1,7 +1,0 @@
-Main Loop:
-    1. Handle User Requests (Main Priority During Trading Hours)
-        a. Add request to queue
-    2. Update Prices and Predications (Main Priority When Market is Closed)
-        a. Constantly polling websocket to grab new Prices (As often as possible)
-        b. Requests for prices on specific stocks (30 calls / minute)
-            i. Pass gathered data to NN for calculation

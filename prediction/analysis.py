@@ -4,16 +4,18 @@ import os
 #import numpy as np
 #import keras
 import random
+import investpy as iv
 
-from modules.data_collection import DataCollection
 
 SAMPLE_P = 50
 RSI_P = 14
 EMA12_P = 12
 EMA26_P = 26
 SMA_P = 15
-#Gets Moving average convergence divergence for list of prices
-#Allows for training parameter, which also generates the correct predictions
+# Gets Moving average convergence divergence for list of prices
+# Allows for training parameter, which also generates the correct predictions
+
+
 def get_macd(prices, train=True):
     SMA12 = 0
     EMA12_prev = 0
@@ -53,19 +55,23 @@ def get_macd(prices, train=True):
                 SMA12 += p
             elif n == EMA12_P:
                 SMA12 = SMA12 / EMA12_P
-                EMA12 = (p * (2 / (EMA12_P - 1))) + (SMA12 * (1 - (2 / (EMA12_P - 1))))
+                EMA12 = (p * (2 / (EMA12_P - 1))) + \
+                    (SMA12 * (1 - (2 / (EMA12_P - 1))))
                 EMA12_prev = EMA12
             else:
-                EMA12 = (p * (2 / (EMA12_P - 1))) + (EMA12_prev * (1 - (2 / (EMA12_P - 1))))
+                EMA12 = (p * (2 / (EMA12_P - 1))) + \
+                    (EMA12_prev * (1 - (2 / (EMA12_P - 1))))
                 EMA12_prev = EMA12
             if n < EMA26_P:
                 SMA26 += p
             elif n == EMA26_P:
                 SMA26 = SMA26 / EMA26_P
-                EMA26 = (p * (2 / (EMA26_P - 1))) + (SMA26 * (1 - (2 / (EMA26_P - 1))))
+                EMA26 = (p * (2 / (EMA26_P - 1))) + \
+                    (SMA26 * (1 - (2 / (EMA26_P - 1))))
                 EMA26_prev = EMA26
             else:
-                EMA26 = (p * (2 / (EMA26_P - 1))) + (EMA26_prev * (1 - (2 / (EMA26_P - 1))))
+                EMA26 = (p * (2 / (EMA26_P - 1))) + \
+                    (EMA26_prev * (1 - (2 / (EMA26_P - 1))))
                 EMA26_prev = EMA26
             if n >= EMA26_P:
                 MACD.append(EMA12 - EMA26)
@@ -76,7 +82,9 @@ def get_macd(prices, train=True):
     else:
         return macd
 
-#Calculates list of Relative Strength index for given percentages
+# Calculates list of Relative Strength index for given percentages
+
+
 def get_rsi(percents, train=True):
     rsi_gain = 0
     rsi_loss = 0
@@ -146,9 +154,15 @@ def get_rsi(percents, train=True):
 
 
 def get_prediction(ticker):
-    return random.random()
+    upper = random.random()
+    lower = random.random()
+    data = iv.get_stock_recent_data(stock=ticker, country='United States')
+    prediction = data['Open'][-1]
+    upper_value = prediction * (1 + upper)
+    lower_value = prediction * lower
+    return (prediction, upper_value, lower_value)
     '''
-    price_map = DataCollection.request_historical(ticker)
+    price_map = Data.toFixed(2)Collection.request_historical(ticker)
     volumes = price_map['v']
     opens = price_map['o']
     highs = price_map['h']

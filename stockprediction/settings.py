@@ -10,11 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
+import django_heroku
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -25,7 +25,8 @@ SECRET_KEY = 'vh!b=kbd*k$*!!+ql#$%=jy@*6k3t_vx7jo+@x-#mb*n&*f)b#'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost',
+                 '.herokuapp.com', 'stock-prediction1.herokuapp.com']
 LOGIN_URL = '/login'
 
 
@@ -130,8 +131,8 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
-
-STATIC_ROOT = os.path.join(BASE_DIR, 'static-root')
+STATIC_ROOT = 'staticfiles'
+#STATIC_ROOT = os.path.join(BASE_DIR, 'stockpre-web/build/static')
 
 
 CORS_ORIGIN_ALLOW_ALL = True  # Any website has access to my api
@@ -149,14 +150,13 @@ if DEBUG:
     DEFAULT_RENDERER_CLASSES += [
         'rest_framework.renderers.BrowsableAPIRenderer',
     ]
-#####################################################################
-# This is what you need to have uncommented to not get a 403 error if you are not logged in
-# We MUST get rid of this/comment it out when we deploy
     DEFAULT_AUTHENTICATION_CLASSES += [
-         'stockprediction.rest_api.dev.DevAuthentication'
+        'stockprediction.rest_api.dev.DevAuthentication'
     ]
-#####################################################################
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': DEFAULT_AUTHENTICATION_CLASSES,
     'DEFAULT_RENDERER_CLASSES': DEFAULT_RENDERER_CLASSES,
 }
+
+django_heroku.settings(locals())

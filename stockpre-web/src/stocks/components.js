@@ -12,8 +12,8 @@ export function StockLink(props) {
     event.preventDefault();
     window.location.href = `/stocks/${stock.ticker.toUpperCase()}`;
   };
+  var script = document.createElement("script");
   useEffect(() => {
-    const script = document.createElement("script");
     script.type = "text/javascript";
     script.src =
       "https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js";
@@ -27,9 +27,11 @@ export function StockLink(props) {
     }`;
     document.body.appendChild(script);
     return () => {
-      document.body.removeChild(script);
+      if (script !== null) {
+        document.body.removeChild(script);
+      }
     };
-  });
+  }, []);
   return (
     <div class="tradingview-widget-container">
       <div class="tradingview-widget-container__widget"></div>

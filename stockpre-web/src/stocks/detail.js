@@ -48,7 +48,7 @@ export class Stock extends React.PureComponent {
 
 		const tvWidget = new widget(widgetOptions);
 		this.tvWidget = tvWidget;
-
+		/*
 		tvWidget.onChartReady(() => {
 			tvWidget.headerReady().then(() => {
 				const button = tvWidget.createButton();
@@ -65,6 +65,7 @@ export class Stock extends React.PureComponent {
 				button.innerHTML = 'Check API';
 			});
 		});
+		*/
 	}
 
 	componentWillUnmount() {

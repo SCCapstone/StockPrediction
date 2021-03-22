@@ -121,7 +121,7 @@ export function StockDetailComponent(props) {
   }, [tickerinit, didStockLookup, setDidStockLookup]);
   return ticker === null ? null : (
     <div>
-      <Stock ticker={ticker} className={props.className} />
+      <Stock symbol={ticker} className={props.className} />
       <PredictionComponent
         ticker={ticker}
         didPredictionLookup={didPredictionLookup}

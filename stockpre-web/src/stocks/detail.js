@@ -1,5 +1,7 @@
-import * as React from 'react';
 import { widget } from '../charting_library';
+import React, { useEffect } from "react";
+
+import { apiPredictionLookup } from "./lookup";
 
 function getLanguageFromURL() {
 	const regex = new RegExp('[\\?&]lang=([^&#]*)');
@@ -7,8 +9,14 @@ function getLanguageFromURL() {
 	return results === null ? null : decodeURIComponent(results[1].replace(/\+/g, ' '));
 }
 
-export class Stock extends React.PureComponent {
-	static defaultProps = {
+export function Stock(props) {
+	const {
+		symbol,
+		prediction,
+		didPredictionLookup,
+		handleBackendPredictionLookup
+	} = props;
+	const defaultSettings = {
 		symbol: 'AAPL',
 		interval: 'D',
 		containerId: 'tv_chart_container',
@@ -38,46 +46,48 @@ export class Stock extends React.PureComponent {
 		}
 	};
 
-	tvWidget = null;
-
-	componentDidMount() {
+	let tvWidget = null;
+	useEffect(() => {
 		const widgetOptions = {
-			symbol: this.props.symbol,
+			symbol: symbol,
 			// BEWARE: no trailing slash is expected in feed URL
-			datafeed: new window.Datafeeds.UDFCompatibleDatafeed(this.props.datafeedUrl),
-			interval: this.props.interval,
-			container_id: this.props.containerId,
-			library_path: this.props.libraryPath,
+			datafeed: new window.Datafeeds.UDFCompatibleDatafeed(defaultSettings.datafeedUrl),
+			interval: defaultSettings.interval,
+			container_id: defaultSettings.containerId,
+			library_path: defaultSettings.libraryPath,
 
 			locale: getLanguageFromURL() || 'en',
 			disabled_features: ['use_localstorage_for_settings', 'left_toolbar', 'header_symbol_search', 'display_market_status', 'header_screenshot', 'header_compare', 'header_indicators', 'compare_symbol', 'header_saveload', 'create_volume_indicator_by_default', 'control_bar', 'show_chart_property_page', 'countdown',],
 			enabled_features: ['study_templates'],
-			charts_storage_url: this.props.chartsStorageUrl,
-			charts_storage_api_version: this.props.chartsStorageApiVersion,
-			client_id: this.props.clientId,
-			user_id: this.props.userId,
-			fullscreen: this.props.fullscreen,
-			autosize: this.props.autosize,
-			studies_overrides: this.props.studiesOverrides,
+			charts_storage_url: defaultSettings.chartsStorageUrl,
+			charts_storage_api_version: defaultSettings.chartsStorageApiVersion,
+			client_id: defaultSettings.clientId,
+			user_id: defaultSettings.userId,
+			fullscreen: defaultSettings.fullscreen,
+			autosize: defaultSettings.autosize,
+			studies_overrides: defaultSettings.studiesOverrides,
 		};
-
-		const tvWidget = new widget(widgetOptions);
-		this.tvWidget = tvWidget;
-	}
-
-	componentWillUnmount() {
-		if (this.tvWidget !== null) {
-			this.tvWidget.remove();
-			this.tvWidget = null;
+		tvWidget = new widget(widgetOptions);
+		if (didPredictionLookup === false) {
+		  apiPredictionLookup(symbol, handleBackendPredictionLookup);
+		};
+		if (prediction) {
+			console.log(prediction);
+		} else {
+			console.log("no pred");
 		}
-	}
+		return () => {
+			if (tvWidget !== null) {
+				tvWidget.remove();
+				tvWidget = null;
+			}
+		}
+	});
 
-	render() {
-		return (
-			<div
-				id={ this.props.containerId }
-				className={ 'TVChartContainer' }
-			/>
-		);
-	}
+	return (
+		<div
+			id={ defaultSettings.containerId }
+			className={ 'TVChartContainer' }
+		/>
+	);
 }

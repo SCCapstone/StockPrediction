@@ -21,6 +21,21 @@ export class Stock extends React.PureComponent {
 		fullscreen: false,
 		autosize: false,
 		studiesOverrides: {},
+		custom_indicators_getter: function (PineJS) {
+			return Promise.resolve([
+				{
+					name: "prediction",
+					metainfo: {
+						_metainfoVersion: 40,
+						id: "prediction@tv-basicstudies-1",
+						scriptIdPart: "",
+						name: "prediction",
+						description: "Prediction of AAPL",
+
+					}
+				}
+			]);
+		}
 	};
 
 	tvWidget = null;
@@ -35,8 +50,8 @@ export class Stock extends React.PureComponent {
 			library_path: this.props.libraryPath,
 
 			locale: getLanguageFromURL() || 'en',
-			disabled_features: ['use_localstorage_for_settings'],
-			enabled_features: ['hide_left_toolbar_by_default','study_templates'],
+			disabled_features: ['use_localstorage_for_settings', 'left_toolbar', 'header_symbol_search', 'display_market_status', 'header_screenshot', 'header_compare', 'header_indicators', 'compare_symbol', 'header_saveload', 'create_volume_indicator_by_default', 'control_bar', 'show_chart_property_page', 'countdown',],
+			enabled_features: ['study_templates'],
 			charts_storage_url: this.props.chartsStorageUrl,
 			charts_storage_api_version: this.props.chartsStorageApiVersion,
 			client_id: this.props.clientId,
@@ -48,24 +63,6 @@ export class Stock extends React.PureComponent {
 
 		const tvWidget = new widget(widgetOptions);
 		this.tvWidget = tvWidget;
-		/*
-		tvWidget.onChartReady(() => {
-			tvWidget.headerReady().then(() => {
-				const button = tvWidget.createButton();
-				button.setAttribute('title', 'Click to show a notification popup');
-				button.classList.add('apply-common-tooltip');
-				button.addEventListener('click', () => tvWidget.showNoticeDialog({
-					title: 'Notification',
-					body: 'TradingView Charting Library API works correctly',
-					callback: () => {
-						console.log('Noticed!');
-					},
-				}));
-
-				button.innerHTML = 'Check API';
-			});
-		});
-		*/
 	}
 
 	componentWillUnmount() {

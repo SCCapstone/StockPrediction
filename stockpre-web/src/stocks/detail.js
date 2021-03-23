@@ -8,7 +8,35 @@ function getLanguageFromURL() {
 	const results = regex.exec(window.location.search);
 	return results === null ? null : decodeURIComponent(results[1].replace(/\+/g, ' '));
 }
+const defaultSettings = {
+	symbol: 'AAPL',
+	interval: 'D',
+	containerId: 'tv_chart_container',
+	datafeedUrl: 'https://demo_feed.tradingview.com',
+	libraryPath: '/charting_library/',
+	chartsStorageUrl: 'https://saveload.tradingview.com',
+	chartsStorageApiVersion: '1.1',
+	clientId: 'tradingview.com',
+	userId: 'public_user_id',
+	fullscreen: false,
+	autosize: false,
+	studiesOverrides: {},
+	custom_indicators_getter: function (PineJS) {
+		return Promise.resolve([
+			{
+				name: "prediction",
+				metainfo: {
+					_metainfoVersion: 40,
+					id: "prediction@tv-basicstudies-1",
+					scriptIdPart: "",
+					name: "prediction",
+					description: "Prediction of AAPL",
 
+				}
+			}
+		]);
+	}
+};
 export function Stock(props) {
 	const {
 		symbol,
@@ -16,40 +44,10 @@ export function Stock(props) {
 		didPredictionLookup,
 		handleBackendPredictionLookup
 	} = props;
-	const defaultSettings = {
-		symbol: 'AAPL',
-		interval: 'D',
-		containerId: 'tv_chart_container',
-		datafeedUrl: 'https://demo_feed.tradingview.com',
-		libraryPath: '/charting_library/',
-		chartsStorageUrl: 'https://saveload.tradingview.com',
-		chartsStorageApiVersion: '1.1',
-		clientId: 'tradingview.com',
-		userId: 'public_user_id',
-		fullscreen: false,
-		autosize: false,
-		studiesOverrides: {},
-		custom_indicators_getter: function (PineJS) {
-			return Promise.resolve([
-				{
-					name: "prediction",
-					metainfo: {
-						_metainfoVersion: 40,
-						id: "prediction@tv-basicstudies-1",
-						scriptIdPart: "",
-						name: "prediction",
-						description: "Prediction of AAPL",
-
-					}
-				}
-			]);
-		}
-	};
-
 	let tvWidget = null;
 	useEffect(() => {
 		const widgetOptions = {
-			symbol: symbol,
+			symbol: symbol ? symbol : defaultSettings.symbol, // Could throw warning here
 			// BEWARE: no trailing slash is expected in feed URL
 			datafeed: new window.Datafeeds.UDFCompatibleDatafeed(defaultSettings.datafeedUrl),
 			interval: defaultSettings.interval,

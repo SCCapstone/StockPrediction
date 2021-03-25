@@ -1,12 +1,10 @@
 import { subscribeOnStream, unsubscribeFromStream } from './streaming.js'
 const finnhub = require('finnhub');
-const request = require('request');
 
 const authToken = "bua1l2n48v6q418fsepg"; 
 
 const api_key = finnhub.ApiClient.instance.authentications['api_key'];
 api_key.apiKey = authToken;
-const finnhubClient = new finnhub.DefaultApi();
 
 const lastBarsCache = new Map();
 
@@ -39,9 +37,9 @@ export default {
         onResolveErrorCallback
     ) => {
         const symbols = await (await fetch(`https://finnhub.io/api/v1/stock/symbol?exchange=US&token=${authToken}`)).json();
-        console.log("SYMBOLS:", symbols);
+        //console.log("SYMBOLS:", symbols);
         const symbolItem = symbols.find(({ displaySymbol }) => symbolName === displaySymbol);
-        console.log("FOUND SYMBOL:", symbolItem);
+        //console.log("FOUND SYMBOL:", symbolItem);
         if (!symbolItem) {
             onResolveErrorCallback(`Cannot resolve symbol: ${symbolName}`);
             return;
@@ -88,7 +86,6 @@ export default {
                     onHistoryCallback([], {noData: true});
                     return;
                 }
-                console.log(data['t']);
                 const len = data['t'].length;
                 let bars = [];
                 for (var i = 0; i < len; i += 1) {
@@ -103,7 +100,7 @@ export default {
                 if (firstDataRequest) {
                     lastBarsCache.set(symbolInfo.displaySymbol, { ...bars[bars.length - 1] })
                 }
-                console.log("GETBARS:", bars);
+                //console.log("GETBARS:", bars);
                 onHistoryCallback(bars, {noData: false});
         }); 
     },

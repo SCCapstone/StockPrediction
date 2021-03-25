@@ -74,14 +74,15 @@ export function Stock(props) {
 		if (didPredictionLookup === false && !currPrediction) {
 		  apiPredictionLookup(symbol, handleBackendPredictionLookup);
 		};
-		if (prediction && !currPrediction) {
-			currPrediction = prediction;
-			console.log("prediction set")
-			console.log(currPrediction);
+		if (prediction) {
+			if (!currPrediction) {
+				currPrediction = prediction;
+				console.log("prediction set")
+				console.log(currPrediction);
+			}
 		}
 		if (currPrediction !== null && tvWidget !== null) {
 			const currTime = new Date().getTime() / 1000;
-			//currPrediction.prediction_date
 			const predTime = americanDateToUnixTimestamp(currPrediction.prediction_date);
 			tvWidget.onChartReady(() => {
 				const chart = tvWidget.chart();
@@ -164,6 +165,7 @@ export function Stock(props) {
 				tvWidget.remove();
 				tvWidget = null;
 			}
+			currPrediction = null;
 		}
 	});
 

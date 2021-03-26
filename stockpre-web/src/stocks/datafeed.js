@@ -1,7 +1,6 @@
 import { subscribeOnStream, unsubscribeFromStream } from './streaming.js'
+import { authToken } from '../App.js'
 const finnhub = require('finnhub');
-
-const authToken = "bua1l2n48v6q418fsepg"; 
 
 const api_key = finnhub.ApiClient.instance.authentications['api_key'];
 api_key.apiKey = authToken;

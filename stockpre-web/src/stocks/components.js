@@ -6,7 +6,7 @@ import { StockList } from "./list";
 import { ActionButton } from "./buttons";
 
 import { authToken } from '../App.js';
-let updaterID;
+
 // Shows singe quote and prediction. Routes to detailed view
 export function StockLink(props) {
   const { 
@@ -19,7 +19,7 @@ export function StockLink(props) {
   const [openingPrice, setOpeningPrice] = useState(1.0);
   const [percentChange, setPercentChange] = useState(0.0);
   const [currPrediction, setCurrPrediction] = useState(null);
-  const [delayState, setDelayState] = useState(false);
+  
 
   const handleStockLink = (event) => {
     event.preventDefault();

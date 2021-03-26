@@ -1,85 +1,178 @@
-import * as React from 'react';
 import { widget } from '../charting_library';
+import React, { useEffect } from "react";
+import Datafeed from "./datafeed.js"
+import { apiPredictionLookup } from "./lookup";
 
 function getLanguageFromURL() {
 	const regex = new RegExp('[\\?&]lang=([^&#]*)');
 	const results = regex.exec(window.location.search);
 	return results === null ? null : decodeURIComponent(results[1].replace(/\+/g, ' '));
 }
-
-export class Stock extends React.PureComponent {
-	static defaultProps = {
-		symbol: 'AAPL',
-		interval: 'D',
-		containerId: 'tv_chart_container',
-		datafeedUrl: 'https://demo_feed.tradingview.com',
-		libraryPath: '/charting_library/',
-		chartsStorageUrl: 'https://saveload.tradingview.com',
-		chartsStorageApiVersion: '1.1',
-		clientId: 'tradingview.com',
-		userId: 'public_user_id',
-		fullscreen: false,
-		autosize: false,
-		studiesOverrides: {},
-	};
-
-	tvWidget = null;
-
-	componentDidMount() {
+function americanDateToUnixTimestamp(date) {
+	// mm/dd/yyyy to yyyy-mm-dd to Javascript timestamp (ms) to Unix timestamp (s)
+	let fields = date.split('/');
+	date = fields[2] + '-' + fields[0] + '-' + fields[1];
+	return new Date(date).getTime() / 1000;
+}
+const defaultSettings = {
+	symbol: 'AAPL',
+	interval: 'D',
+	containerId: 'tv_chart_container',
+	datafeedUrl: 'https://demo_feed.tradingview.com',
+	libraryPath: '/charting_library/',
+	chartsStorageUrl: 'https://saveload.tradingview.com',
+	chartsStorageApiVersion: '1.1',
+	clientId: 'tradingview.com',
+	userId: 'public_user_id',
+	fullscreen: false,
+	autosize: false,
+	studiesOverrides: {},
+};
+let currPrediction = null;
+let tvWidget = null;
+export function Stock(props) {
+	const {
+		symbol,
+		prediction,
+		didPredictionLookup,
+		handleBackendPredictionLookup
+	} = props;
+	useEffect(() => {
 		const widgetOptions = {
-			symbol: this.props.symbol,
+			symbol: symbol ? symbol : defaultSettings.symbol, // Could throw warning here
 			// BEWARE: no trailing slash is expected in feed URL
-			datafeed: new window.Datafeeds.UDFCompatibleDatafeed(this.props.datafeedUrl),
-			interval: this.props.interval,
-			container_id: this.props.containerId,
-			library_path: this.props.libraryPath,
-
+			datafeed: Datafeed,
+			interval: defaultSettings.interval,
+			container_id: defaultSettings.containerId,
+			library_path: defaultSettings.libraryPath,
 			locale: getLanguageFromURL() || 'en',
-			disabled_features: ['use_localstorage_for_settings'],
-			enabled_features: ['hide_left_toolbar_by_default','study_templates'],
-			charts_storage_url: this.props.chartsStorageUrl,
-			charts_storage_api_version: this.props.chartsStorageApiVersion,
-			client_id: this.props.clientId,
-			user_id: this.props.userId,
-			fullscreen: this.props.fullscreen,
-			autosize: this.props.autosize,
-			studies_overrides: this.props.studiesOverrides,
+			disabled_features: [
+				'use_localstorage_for_settings', 
+				'left_toolbar', 
+				'header_symbol_search', 
+				'display_market_status', 
+				'header_screenshot', 
+				'header_compare', 
+				'header_indicators', 
+				'compare_symbol', 
+				'header_saveload', 
+				'create_volume_indicator_by_default', 
+				'control_bar', 
+				'show_chart_property_page', 
+				'countdown'
+			],
+			enabled_features: ['study_templates'],
+			charts_storage_url: defaultSettings.chartsStorageUrl,
+			charts_storage_api_version: defaultSettings.chartsStorageApiVersion,
+			client_id: defaultSettings.clientId,
+			user_id: defaultSettings.userId,
+			fullscreen: defaultSettings.fullscreen,
+			autosize: defaultSettings.autosize,
+			studies_overrides: defaultSettings.studiesOverrides,
 		};
-
-		const tvWidget = new widget(widgetOptions);
-		this.tvWidget = tvWidget;
-
-		tvWidget.onChartReady(() => {
-			tvWidget.headerReady().then(() => {
-				const button = tvWidget.createButton();
-				button.setAttribute('title', 'Click to show a notification popup');
-				button.classList.add('apply-common-tooltip');
-				button.addEventListener('click', () => tvWidget.showNoticeDialog({
-					title: 'Notification',
-					body: 'TradingView Charting Library API works correctly',
-					callback: () => {
-						console.log('Noticed!');
-					},
-				}));
-
-				button.innerHTML = 'Check API';
-			});
-		});
-	}
-
-	componentWillUnmount() {
-		if (this.tvWidget !== null) {
-			this.tvWidget.remove();
-			this.tvWidget = null;
+		tvWidget = new widget(widgetOptions);
+		if (didPredictionLookup === false && !currPrediction) {
+		  apiPredictionLookup(symbol, handleBackendPredictionLookup);
+		};
+		if (prediction) {
+			if (!currPrediction) {
+				currPrediction = prediction;
+				console.log("prediction set")
+				console.log(currPrediction);
+			}
 		}
-	}
+		if (currPrediction !== null && tvWidget !== null) {
+			const currTime = new Date().getTime() / 1000;
+			const predTime = americanDateToUnixTimestamp(currPrediction.prediction_date);
+			tvWidget.onChartReady(() => {
+				const chart = tvWidget.chart();
+				const {from, to} = chart.getVisibleRange();
+				chart.setVisibleRange({from: from, to: predTime});
+				try {
+					chart.createMultipointShape(
+						[{
+							time: currTime,
+							channel: 'close'
+						}, 
+						{
+							time: predTime,
+							price: currPrediction.upper_value,
+							channel: 'close'
+						}], 
+						{
+							shape: 'trend_line',
+							lock: true,
+							overrides: {
+								linecolor: '#00ff00',
+								linestyle: 2
+							}
+						}, null
+					);
+				} catch (err) {
+					console.log(err);
+				}
+				try {
+					chart.createMultipointShape(
+						[{
+							time: currTime,
+							channel: 'close'
+						}, 
+						{
+							time: predTime, 
+							price: currPrediction.lower_value,
+							channel: 'close'
+						}], 
+						{
+							shape: 'trend_line', 
+							lock: true,
+							overrides: {
+								linecolor: '#ff0000',
+								linestyle: 2
+							}
+						}, null
+					);
+				} catch (err) {
+					console.log(err);
+				}
+				try {
+					chart.createMultipointShape(
+						[{
+							time: currTime,
+							channel: 'close'
+						}, 
+						{
+							time: predTime, 
+							price: currPrediction.future_value,
+							channel: 'close'
+						}], 
+						{
+							shape: 'trend_line', 
+							lock: true,
+							overrides: {
+								linecolor: '#000000',
+								linestyle: 2
+							}
+						}, null
+					);
+				} catch (err) {
+					console.log(err);
+				}
+			});
+			
+		}
+		return () => {
+			if (tvWidget !== null) {
+				tvWidget.remove();
+				tvWidget = null;
+			}
+			currPrediction = null;
+		}
+	}, [prediction]);
 
-	render() {
-		return (
-			<div
-				id={ this.props.containerId }
-				className={ 'TVChartContainer' }
-			/>
-		);
-	}
+	return (
+		<div
+			id={ defaultSettings.containerId }
+			className={ 'TVChartContainer' }
+		/>
+	);
 }

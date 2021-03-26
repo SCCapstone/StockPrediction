@@ -167,7 +167,7 @@ export function Stock(props) {
 			}
 			currPrediction = null;
 		}
-	});
+	}, [prediction]);
 
 	return (
 		<div

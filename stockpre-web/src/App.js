@@ -1,6 +1,9 @@
 import logo from './logo.svg';
 import './App.css';
 
+export var authToken = 'bua1l2n48v6q418fsepg';
+document.cookie = `X-Authorization=${authToken}; path=/` 
+
 function App() {
   return (
     <div className="App">

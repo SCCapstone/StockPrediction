@@ -1,0 +1,59 @@
+# Stock Prediction User Interface Files
+
+This folder contains all files associate with the User Interface for the stock predication web application. 
+
+
+## Setup
+
+#### If you've already cloned/pulled:
+Run `pipenv update` to sync the pipfile, then install and shell
+
+### Regardless
+Navigate to the root directory of the project. And run:
+
+`pipenv install`
+
+This will install all of the required Python modules.
+Activate the virtual environment with
+
+`pipenv shell`
+
+Next run all migrations for database with
+
+`./manage.py makemigrations`
+
+and apply them
+
+`./manage.py migrate`
+#### If you are getting issues with the python version, make sure your ide is using the pipenv interpreter
+
+## Running
+
+`./manage.py runserver`
+
+# Deployment
+
+Webapps need a deployment section that explains how to get it deployed on the 
+Internet. These should be detailed enough so anyone can re-deploy if needed
+. Note that you **do not put passwords in git**. 
+
+# Testing
+
+Running tests:
+
+`./manage.py test`
+
+Location of tests:
+
+`./stocks/tests.py`
+
+## Testing Technology
+
+TBD.
+
+## Running Tests
+
+In due time.
+
+# Authors
+Zane H.: ahmedh@email.sc.edu

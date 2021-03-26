@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 
-import { StockLink } from "./components";
 import { apiStockSearch } from "./lookup";
 
 export function StockSearchComponent(props) {

@@ -5,36 +5,58 @@ import { Stock } from "./detail";
 import { StockList } from "./list";
 import { ActionButton } from "./buttons";
 
+import { authToken } from '../App.js';
+let updaterID;
 // Shows singe quote and prediction. Routes to detailed view
 export function StockLink(props) {
-  const { stock } = props;
+  const { 
+    stock,
+    length,
+    didPredictionLookup,
+    prediction,
+    handleBackendPredictionLookup } = props;
+  const [currentPrice, setCurrentPrice] = useState(1.0);
+  const [openingPrice, setOpeningPrice] = useState(1.0);
+  const [percentChange, setPercentChange] = useState(0.0);
+  const [currPrediction, setCurrPrediction] = useState(null);
+  const [delayState, setDelayState] = useState(false);
+
   const handleStockLink = (event) => {
     event.preventDefault();
     window.location.href = `/stocks/${stock.ticker.toUpperCase()}`;
   };
-  var script = document.createElement("script");
+
+  const update = async () => {
+    const fullfilled_request = await(await (fetch(`https://finnhub.io/api/v1/quote?symbol=${stock.ticker}&token=${authToken}`))).json();
+    console.log("Filled", fullfilled_request);
+    setOpeningPrice(fullfilled_request['o']);
+    setCurrentPrice(fullfilled_request['c']);
+    setPercentChange((currentPrice - openingPrice) / openingPrice);
+  };
+
   useEffect(() => {
-    script.type = "text/javascript";
-    script.src =
-      "https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js";
-    script.async = true;
-    script.innerHTML = `{
-      "symbol": "NASDAQ:${stock.ticker}",
-      "width": 350,
-      "colorTheme": "light",
-      "isTransparent": false,
-      "locale": "en"
-    }`;
-    document.body.appendChild(script);
+    if (didPredictionLookup === false && !currPrediction) {
+		  apiPredictionLookup(stock.ticker, handleBackendPredictionLookup);
+		};
+    if (prediction && !currPrediction) {
+      setCurrPrediction(prediction);
+    }
+    const interval = setInterval(() => {
+      update();
+    }, 2000 * length);
     return () => {
-      if (script !== null) {
-        document.body.removeChild(script);
-      }
-    };
-  }, []);
+      setCurrPrediction(null);
+      clearInterval(interval);
+    }
+  }, [didPredictionLookup, handleBackendPredictionLookup, prediction]);
+  
   return (
-    <div class="tradingview-widget-container">
-      <div class="tradingview-widget-container__widget"></div>
+    <div onClick={handleStockLink} className="border m-3 p-3">
+      <h5>{stock.ticker}</h5>
+      <h6>{stock.company_name}</h6> 
+      <div onClick={handleStockLink}>
+        {currentPrice.toFixed(2)} ({percentChange >= 0 && <span>+</span>}{(percentChange * 100).toFixed(2)}%)
+      </div>
     </div>
   );
 }
@@ -100,7 +122,7 @@ export function StockDetailComponent(props) {
     } else if (status === 200 && !isTracking) {
       setIsTracking(true);
     } else if (status === 201 && isTracking) {
-      console.log("New pred", response);
+      //console.log("New pred", response);
       const prediction = response.prediction;
       const newPrediction = {
         future_value: prediction.future_value,

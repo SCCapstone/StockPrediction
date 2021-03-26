@@ -1,6 +1,6 @@
 import { widget } from '../charting_library';
 import React, { useEffect } from "react";
-
+import Datafeed from "./datafeed.js"
 import { apiPredictionLookup } from "./lookup";
 
 function getLanguageFromURL() {
@@ -27,21 +27,6 @@ const defaultSettings = {
 	fullscreen: false,
 	autosize: false,
 	studiesOverrides: {},
-	custom_indicators_getter: function (PineJS) {
-		return Promise.resolve([
-			{
-				name: "prediction",
-				metainfo: {
-					_metainfoVersion: 40,
-					id: "prediction@tv-basicstudies-1",
-					scriptIdPart: "",
-					name: "prediction",
-					description: "Prediction of AAPL",
-
-				}
-			}
-		]);
-	}
 };
 let currPrediction = null;
 let tvWidget = null;
@@ -56,7 +41,7 @@ export function Stock(props) {
 		const widgetOptions = {
 			symbol: symbol ? symbol : defaultSettings.symbol, // Could throw warning here
 			// BEWARE: no trailing slash is expected in feed URL
-			datafeed: new window.Datafeeds.UDFCompatibleDatafeed(defaultSettings.datafeedUrl),
+			datafeed: Datafeed,
 			interval: defaultSettings.interval,
 			container_id: defaultSettings.containerId,
 			library_path: defaultSettings.libraryPath,
@@ -89,15 +74,16 @@ export function Stock(props) {
 		if (didPredictionLookup === false && !currPrediction) {
 		  apiPredictionLookup(symbol, handleBackendPredictionLookup);
 		};
-		if (prediction && !currPrediction) {
-			currPrediction = prediction;
-			console.log("prediction set")
-			console.log(currPrediction);
+		if (prediction) {
+			if (!currPrediction) {
+				currPrediction = prediction;
+				console.log("prediction set")
+				console.log(currPrediction);
+			}
 		}
 		if (currPrediction !== null && tvWidget !== null) {
-			const currTime = new Date("03/27/2018").getTime() / 1000;
-			//currPrediction.prediction_date
-			const predTime = americanDateToUnixTimestamp("05/01/2018");
+			const currTime = new Date().getTime() / 1000;
+			const predTime = americanDateToUnixTimestamp(currPrediction.prediction_date);
 			tvWidget.onChartReady(() => {
 				const chart = tvWidget.chart();
 				const {from, to} = chart.getVisibleRange();
@@ -110,7 +96,7 @@ export function Stock(props) {
 						}, 
 						{
 							time: predTime,
-							price: 14.10,
+							price: currPrediction.upper_value,
 							channel: 'close'
 						}], 
 						{
@@ -151,12 +137,12 @@ export function Stock(props) {
 				try {
 					chart.createMultipointShape(
 						[{
-							time: currTime + 1,
+							time: currTime,
 							channel: 'close'
 						}, 
 						{
 							time: predTime, 
-							price: 13.6,
+							price: currPrediction.future_value,
 							channel: 'close'
 						}], 
 						{
@@ -179,8 +165,9 @@ export function Stock(props) {
 				tvWidget.remove();
 				tvWidget = null;
 			}
+			currPrediction = null;
 		}
-	});
+	}, [prediction]);
 
 	return (
 		<div

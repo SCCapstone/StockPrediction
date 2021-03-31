@@ -10,6 +10,12 @@ export function StockSearchComponent(props) {
     setSearchTerm(event.target.value);
   };
 
+  const handleSearchSumbit = (event) => {
+    event.preventDefault();
+    console.log(event.target);
+    window.location.href = `/stocks/${searchTerm.toUpperCase()}`
+  }
+
   useEffect(() => {
     const handleSearchTermLookup = (response, status) => {
       if (status === 200) {
@@ -34,9 +40,10 @@ export function StockSearchComponent(props) {
           onChange={handleSearchTermChange}
           list="stocks"
         />
+        <button className="button" onClick={handleSearchSumbit}>Search</button>
         <datalist id="stocks">
           {searchTerm !== "" && searchResults.map((item) => (
-            <option value={item.ticker} /> 
+            <option value={item.ticker}></option>
           ))}
         </datalist>
       </div>

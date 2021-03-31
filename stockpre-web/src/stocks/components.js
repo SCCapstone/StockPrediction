@@ -43,7 +43,7 @@ export function StockLink(props) {
     }
     const interval = setInterval(() => {
       update();
-    }, 2000 * length);
+    }, 5000 * length);
     return () => {
       setCurrPrediction(null);
       clearInterval(interval);

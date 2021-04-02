@@ -2,6 +2,7 @@ import { widget } from '../charting_library';
 import React, { useEffect } from "react";
 import Datafeed from "./datafeed.js"
 import { apiPredictionLookup } from "./lookup";
+import { Card, CardContent, makeStyles } from '@material-ui/core';
 
 function getLanguageFromURL() {
 	const regex = new RegExp('[\\?&]lang=([^&#]*)');
@@ -14,12 +15,13 @@ function americanDateToUnixTimestamp(date) {
 	date = fields[2] + '-' + fields[0] + '-' + fields[1];
 	return new Date(date).getTime() / 1000;
 }
+
 const defaultSettings = {
 	symbol: 'AAPL',
 	interval: 'D',
 	containerId: 'tv_chart_container',
 	datafeedUrl: 'https://demo_feed.tradingview.com',
-	libraryPath: '/charting_library/',
+	libraryPath: '/static/js/charting_library/',
 	chartsStorageUrl: 'https://saveload.tradingview.com',
 	chartsStorageApiVersion: '1.1',
 	clientId: 'tradingview.com',
@@ -30,6 +32,7 @@ const defaultSettings = {
 };
 let currPrediction = null;
 let tvWidget = null;
+
 export function Stock(props) {
 	const {
 		symbol,
@@ -37,6 +40,7 @@ export function Stock(props) {
 		didPredictionLookup,
 		handleBackendPredictionLookup
 	} = props;
+	const classes = useStyles();
 	useEffect(() => {
 		const widgetOptions = {
 			symbol: symbol ? symbol : defaultSettings.symbol, // Could throw warning here
@@ -170,9 +174,22 @@ export function Stock(props) {
 	}, [prediction]);
 
 	return (
-		<div
-			id={ defaultSettings.containerId }
-			className={ 'TVChartContainer' }
-		/>
+		<div>
+			<Card className={classes.root}>
+				<CardContent className={classes.content}>
+					<div id={ defaultSettings.containerId } className={ 'TVChartContainer' }/>
+				</CardContent>
+			</Card>
+		</div>
+
 	);
 }
+
+const useStyles = makeStyles({
+	root: {
+		marginTop: '15px'
+	},
+	content: {
+		borderRadius: '50px'
+	}
+});

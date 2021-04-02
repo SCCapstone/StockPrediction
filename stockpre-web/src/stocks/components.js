@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-
 import { apiStockLookup, apiPredictionLookup } from "./lookup";
 import { Stock } from "./detail";
 import { StockList } from "./list";
 import { ActionButton } from "./buttons";
-
 import { authToken } from '../App.js';
+
+import { Button, Card, CardContent, CardHeader, Chip, Grid, makeStyles, Typography } from '@material-ui/core'
 
 // Shows singe quote and prediction. Routes to detailed view
 export function StockLink(props) {
@@ -19,6 +19,7 @@ export function StockLink(props) {
   const [openingPrice, setOpeningPrice] = useState(1.0);
   const [percentChange, setPercentChange] = useState(0.0);
   const [currPrediction, setCurrPrediction] = useState(null);
+  const classes = useStyles();
   
 
   const handleStockLink = (event) => {
@@ -50,16 +51,64 @@ export function StockLink(props) {
     }
   }, [didPredictionLookup, handleBackendPredictionLookup, prediction]);
   
+  // Zane's working example
+  // return (
+  //   <div onClick={handleStockLink} className="border m-3 p-3">
+  //     <h5>{stock.ticker}</h5>
+  //     <h6>{stock.company_name}</h6> 
+  //     <div onClick={handleStockLink}>
+  //       {currentPrice.toFixed(2)} ({percentChange >= 0 && <span>+</span>}{(percentChange * 100).toFixed(2)}%)
+  //     </div>
+  //   </div>
+  // );
+
+  // Max testing
   return (
-    <div onClick={handleStockLink} className="border m-3 p-3">
-      <h5>{stock.ticker}</h5>
-      <h6>{stock.company_name}</h6> 
-      <div onClick={handleStockLink}>
-        {currentPrice.toFixed(2)} ({percentChange >= 0 && <span>+</span>}{(percentChange * 100).toFixed(2)}%)
-      </div>
-    </div>
+    <Grid container spacing={0} direction="column" alignItems="center" justify="space-evenly">
+      <Card className={classes.root}>
+        <CardHeader className={classes.header} title={stock.company_name} subheader={stock.ticker}/>
+        <CardContent>
+          <Grid container direction="row" alignContent="flex-start" justify="space-evenly">
+            <Grid item direction="column" alignItems="flex-start" justify="space-evenly">
+              <Typography>
+                Current Price: {currentPrice.toFixed(2)}
+              </Typography>
+              <Typography>
+                Percent Change: ({percentChange >= 0 && "+"}{(percentChange * 100).toFixed(2)}%)
+              </Typography>
+            </Grid>
+            <Grid item direction="center" alignItems="flex-end" justify="space-evenly">
+              <Button className={classes.button} variant="contained" onClick={handleStockLink}>
+                Details
+              </Button>
+            </Grid>
+          </Grid>
+        </CardContent>
+      </Card>
+    </Grid>
   );
 }
+
+const useStyles = makeStyles({
+  root: {
+    background: 'linear-gradient(180deg, #FE6B8B 30%, #E8A87C 90%)',
+    marginTop: '5px',
+    marginBottom: '5px',
+    borderRadius: '50px',
+    width: 425
+  },
+  header: {
+    textAlign: 'center'
+  },
+  prediction: {
+    background: 'linear-gradient(180deg, #FE6B8B 30%, #E8A87C 90%)',
+    marginLeft: "5px"
+  },
+  button: {
+    backgroundColor: 'white',
+    color: 'black'
+  }
+})
 
 export function StockListComponent(props) {
   const [newStocks, setNewStocks] = useState([]);
@@ -71,6 +120,7 @@ export function StockListComponent(props) {
   return (
     <div className={props.className}>
       <StockList newStocks={newStocks} {...props} />
+      <br/>
     </div>
   );
 }
@@ -145,32 +195,36 @@ export function StockDetailComponent(props) {
   }, [tickerinit, didStockLookup, setDidStockLookup]);
   return ticker === null ? null : (
     <div>
-      <Stock
-        symbol={ticker}
-        didPredictionLookup={didPredictionLookup}
-        prediction={prediction}
-        handleBackendPredictionLookup={handleBackendPredictionLookup} 
-        className={props.className} />
-      <PredictionComponent
-        ticker={ticker}
-        didPredictionLookup={didPredictionLookup}
-        prediction={prediction}
-        handleBackendPredictionLookup={handleBackendPredictionLookup}
-      />
-      <ActionButton
-        ticker={ticker}
-        predict={false}
-        isTracking={isTracking}
-        handleActionBackend={handleActionBackend}
-      />
-      {isTracking && (
-        <ActionButton
+      <Grid container direction="column" justify="center" alignItems="center">
+        <Stock
+          symbol={ticker}
+          didPredictionLookup={didPredictionLookup}
+          prediction={prediction}
+          handleBackendPredictionLookup={handleBackendPredictionLookup} 
+          className={props.className} />
+        <PredictionComponent
           ticker={ticker}
-          predict={true}
-          isTracking={isTracking}
-          handleActionBackend={handleActionBackend}
+          didPredictionLookup={didPredictionLookup}
+          prediction={prediction}
+          handleBackendPredictionLookup={handleBackendPredictionLookup}
         />
-      )}
+        <Grid container direction="row" alignItems="center" justify="center">
+          <ActionButton
+            ticker={ticker}
+            predict={false}
+            isTracking={isTracking}
+            handleActionBackend={handleActionBackend}
+          />
+          {isTracking && (
+            <ActionButton
+              ticker={ticker}
+              predict={true}
+              isTracking={isTracking}
+              handleActionBackend={handleActionBackend}
+            />
+          )}
+        </Grid>
+      </Grid>
     </div>
   );
 }
@@ -182,6 +236,7 @@ function PredictionComponent(props) {
     didPredictionLookup,
     handleBackendPredictionLookup,
   } = props;
+  const classes = useStyles();
 
   useEffect(() => {
     if (!didPredictionLookup) {
@@ -189,10 +244,21 @@ function PredictionComponent(props) {
     }
   });
 
+  // Zane working code
+  // return prediction !== null ? (
+  //   <div>
+  //     Prediction: {prediction.future_value.toFixed(2)} Range: {prediction.lower_value.toFixed(2)} -{" "}
+  //     {prediction.upper_value.toFixed(2)} on {prediction.prediction_date}
+  //   </div>
+  // ) : null;
+
+  // Max testing
   return prediction !== null ? (
-    <div>
-      Prediction: {prediction.future_value.toFixed(2)} Range: {prediction.lower_value.toFixed(2)} -{" "}
-      {prediction.upper_value.toFixed(2)} on {prediction.prediction_date}
+    <div className="mb-1">
+      <p>{}</p>
+      <Chip label={"Predicted Price: $" + prediction.future_value.toFixed(2)} className={classes.prediction}/>
+      <Chip label={"Range: $" + prediction.lower_value.toFixed(2) + " to $" + prediction.upper_value.toFixed(2)} className={classes.prediction}/>
+      <Chip label={"Date: " + prediction.prediction_date} className={classes.prediction}/>
     </div>
   ) : null;
 }

@@ -7,77 +7,64 @@ import { apiStockSearch } from "./lookup";
 
 export function StockSearchComponent(props) {
   const classes = useStyles();
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState(undefined);
   const [searchResults, setSearchResults] = useState([]);
 
-  const handleSearchTermChange = (event) => {
-    setSearchTerm(event.target.value);
+  const handleSearchTermChange = (event, value) => {
+    if (event && event.type === 'change') {
+      console.log("TYPED: ", event.target.value)
+      setSearchTerm(event.target.value);
+    } else {
+      console.log("AUTO SEARCH: ", value);
+      setSearchTerm(value);
+    }
+    console.log("SEARCHTERM: ", searchTerm);
   };
 
   const handleSearchSubmit = (event) => {
-    if (event.keyCode == 13) {
-      console.log(event.target);
-      window.location.href = `/stocks/${searchTerm.toUpperCase()}`
+    console.log("SEARCH SUBMIT: ", event);
+    console.log(searchTerm);
+    event.preventDefault();
+    window.location.href = `/stocks/${searchTerm.toUpperCase()}`
+  };
+
+  const handleSearchTermLookup = (response, status) => {
+    if (status === 200) {
+      setSearchResults([...response]);
+      console.log("SEARCH RESULTS: ", searchResults);
+    } else if (status === 403) {
+      alert("Unauthorized, must login to access");
+    } else {
+      alert("Error finding stock, status:", status);
     }
   };
 
   useEffect(() => {
-    const handleSearchTermLookup = (response, status) => {
-      if (status === 200) {
-        setSearchResults([...response]);
-      } else if (status === 403) {
-        alert("Unauthorized, must login to access");
-      } else {
-        alert("Error finding stock, status:", status);
-      }
-    };
     apiStockSearch(searchTerm, handleSearchTermLookup);
   }, [searchTerm]);
 
-  // Commented out for testing
-  // return (
-  //   <form className="d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-  //     <div className="input-group">
-  //       <input
-  //         type="text"
-  //         className="form-control bg-light border-0 small z-index:10"
-  //         placeholder="Search tickers"
-  //         value={searchTerm}
-  //         onChange={handleSearchTermChange}
-  //         list="stocks"
-  //       />
-  //       <button className="button" onClick={handleSearchSumbit}>Search</button>
-  //       <datalist id="stocks">
-  //         {searchTerm !== "" && searchResults.map((item) => (
-  //           <option value={item.ticker}></option>
-  //         ))}
-  //       </datalist>
-  //     </div>
-  //   </form>
-  // );
-
-  // Autocomplete search (not working right now)
-  // return (
-  //   <Autocomplete 
-  //     id="demo" 
-  //     freeSolo 
-  //     options={testList.map((option) => option.ticker)}
-  //     value={searchTerm}
-  //     onChange={handleSearchTermChange} 
-  //     renderInput={(params) => (
-  //       <TextField {...params} label="Ticker" margin="normal" variant="outlined" onChange={handleSearchTermChange} onKeyDown={handleSearchSubmit}/> )}>
-  //   </Autocomplete>
-  // );
-
-  // Regular search bar (working)
   return (
-    <div className={classes.search}>
-      <div className={classes.searchIcon}>
-        <SearchRounded button/>
-      </div>
-      <InputBase autoComplete="true" type="text" value={searchTerm} onChange={handleSearchTermChange} onKeyDown={handleSearchSubmit} placeholder="Ticker..." classes={{root: classes.inputRoot, input: classes.inputInput}} inputProps={{ "aria-label": "search" }} list="stocks"/>
-    </div>
-  )
+    <form onSubmit={handleSearchSubmit}>
+      <Autocomplete 
+        id="demo" 
+        value={searchTerm}
+        freeSolo
+        options={searchResults.map((option) => option.ticker)}
+        getOptionLabel={option => option}
+        getOptionSelected={(option, value) => option === value.ticker}
+        onChange={handleSearchTermChange} 
+        onInputChange={(event) => handleSearchTermChange(event, undefined)}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label="Ticker"
+            margin="normal"
+            variant="outlined"
+          /> 
+        )}
+      />
+    </form>
+  );
 }
 
 const testList = [

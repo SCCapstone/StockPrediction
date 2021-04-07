@@ -11,42 +11,72 @@ import { Button, Card, CardContent, CardHeader, Chip, Grid, makeStyles, Typograp
 export function StockLink(props) {
   const { 
     stock,
-    length,
-    didPredictionLookup,
-    prediction,
-    handleBackendPredictionLookup } = props;
-  const [currentPrice, setCurrentPrice] = useState(1.0);
-  const [openingPrice, setOpeningPrice] = useState(1.0);
-  const [percentChange, setPercentChange] = useState(0.0);
+    length
+  } = props;
+  const [currentPrice, setCurrentPrice] = useState('---');
+  const [percentChange, setPercentChange] = useState('---');
+  const [prediction, setPrediction] = useState(null);
   const [currPrediction, setCurrPrediction] = useState(null);
+  const [hasPrediction, setHasPrediction] = useState(false);
+  const [didPredictionLookup, setDidPredictionLookup] = useState(false);
   const classes = useStyles();
   
+  const handleBackendPredictionLookup = (response, status) => {
+    if (status === 200) {
+      const responsePrediction = response.prediction;
+      const newPrediction =
+        responsePrediction !== null
+          ? {
+              future_value: responsePrediction.future_value,
+              upper_value: responsePrediction.upper_value,
+              lower_value: responsePrediction.lower_value,
+              prediction_date: response.prediction_date,
+            }
+          : null;
+      setPrediction(newPrediction);
+      setHasPrediction(true);
+      setDidPredictionLookup(true);
+    } else {
+      alert("Unable to find prediction");
+    }
+  };
 
   const handleStockLink = (event) => {
     event.preventDefault();
     window.location.href = `/stocks/${stock.ticker.toUpperCase()}`;
   };
 
-  const update = async () => {
-    const fullfilled_request = await(await (fetch(`https://finnhub.io/api/v1/quote?symbol=${stock.ticker}&token=${authToken}`))).json();
-    console.log("Filled", fullfilled_request);
-    setOpeningPrice(fullfilled_request['o']);
-    setCurrentPrice(fullfilled_request['c']);
-    setPercentChange((currentPrice - openingPrice) / openingPrice);
+  const update = () => {
+    fetch(`https://finnhub.io/api/v1/quote?symbol=${stock.ticker}&token=${authToken}`).then(request => {
+      request.json().then(fullfilled_request => {
+        console.log("Filled", fullfilled_request);
+        var _openingPrice;
+        var _currentPrice;
+        try {
+          _openingPrice = parseFloat(fullfilled_request['o']);
+          _currentPrice = parseFloat(fullfilled_request['c']);
+          setCurrentPrice(_currentPrice.toFixed(2));
+        } catch {
+          // Continue
+        }
+        setPercentChange((100.0 * (_currentPrice - _openingPrice) / _openingPrice).toFixed(2));
+      });
+    });
   };
 
+  
+
   useEffect(() => {
-    if (didPredictionLookup === false && !currPrediction) {
-		  apiPredictionLookup(stock.ticker, handleBackendPredictionLookup);
-		};
-    if (prediction && !currPrediction) {
+    if (!didPredictionLookup && !currPrediction) {
+      apiPredictionLookup(stock.ticker, handleBackendPredictionLookup);
+    }
+    if (!currPrediction && prediction) {
       setCurrPrediction(prediction);
     }
     const interval = setInterval(() => {
       update();
     }, 5000 * length);
     return () => {
-      setCurrPrediction(null);
       clearInterval(interval);
     }
   }, [didPredictionLookup, handleBackendPredictionLookup, prediction]);
@@ -71,11 +101,13 @@ export function StockLink(props) {
           <Grid container direction="row" alignContent="flex-start" justify="space-evenly">
             <Grid item direction="column" alignItems="flex-start" justify="space-evenly">
               <Typography>
-                Current Price: {currentPrice.toFixed(2)}
+                Current Price: { currentPrice } ({ percentChange !== "---" && parseFloat(percentChange) >= 0 && "+" }{ percentChange }%)
               </Typography>
-              <Typography>
-                Percent Change: ({percentChange >= 0 && "+"}{(percentChange * 100).toFixed(2)}%)
-              </Typography>
+              { hasPrediction && 
+                <Typography>
+                  Prediction: { currPrediction !== null && currPrediction.future_value } @ { currPrediction !== null && currPrediction.prediction_date }
+                </Typography>
+              }
             </Grid>
             <Grid item direction="center" alignItems="flex-end" justify="space-evenly">
               <Button className={classes.button} variant="contained" onClick={handleStockLink}>

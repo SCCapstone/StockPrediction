@@ -8,7 +8,7 @@ export interface UdfResponse {
 
 export interface UdfOkResponse extends UdfResponse {
 	s: 'ok';
-	return https://stock-prediction1.herokuapp.com/;
+	
 }
 
 export interface UdfErrorResponse {

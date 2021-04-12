@@ -2,7 +2,7 @@ import React from "react";
 import { Row, Col } from "react-bootstrap";
 import { StockSearchComponent } from "./search";
 
-// Max Material UI
+// Max and Ahmed Material UI
 import { AppBar, IconButton, Toolbar, List, ListItem, ListItemText, makeStyles, Container, useScrollTrigger, Link, Zoom, Fab } from "@material-ui/core";
 import { HomeRounded, KeyboardArrowUpRounded } from "@material-ui/icons";
 import { PropTypes } from "prop-types";

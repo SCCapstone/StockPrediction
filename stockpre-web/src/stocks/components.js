@@ -50,16 +50,16 @@ export function StockLink(props) {
     fetch(`https://finnhub.io/api/v1/quote?symbol=${stock.ticker}&token=${authToken}`).then(request => {
       request.json().then(fullfilled_request => {
         console.log("Filled", fullfilled_request);
-        var _openingPrice;
-        var _currentPrice;
         try {
-          _openingPrice = parseFloat(fullfilled_request['o']);
-          _currentPrice = parseFloat(fullfilled_request['c']);
+          var _openingPrice = parseFloat(fullfilled_request['o']);
+          var _currentPrice = parseFloat(fullfilled_request['c']);
           setCurrentPrice(_currentPrice.toFixed(2));
+          var _percentChange = 100.0 * (_currentPrice - _openingPrice) / _openingPrice;
+          setPercentChange((_percentChange < 0.0 ? "" : "+") + _percentChange.toFixed(2));
         } catch {
-          // Continue
+          setCurrentPrice("---");
+          setPercentChange("---");
         }
-        setPercentChange((100.0 * (_currentPrice - _openingPrice) / _openingPrice).toFixed(2));
       });
     });
   };
@@ -101,7 +101,7 @@ export function StockLink(props) {
           <Grid container direction="row" alignContent="flex-start" justify="space-evenly">
             <Grid item direction="column" alignItems="flex-start" justify="space-evenly">
               <Typography>
-                Current Price: { currentPrice } ({ percentChange !== "---" && parseFloat(percentChange) >= 0 && "+" }{ percentChange }%)
+                Current Price: { currentPrice } ({ percentChange }%)
               </Typography>
               { hasPrediction && 
                 <Typography>

@@ -25,7 +25,13 @@ export function StockSearchComponent(props) {
     console.log("SEARCH SUBMIT: ", event);
     console.log(searchTerm);
     event.preventDefault();
-    window.location.href = `/stocks/${searchTerm.toUpperCase()}`
+    let regex = /([^-]+) - .*/;
+    const match = searchTerm.match(regex);
+    if (match.length === 0) {
+      window.location.href = `/stocks/${searchTerm.toUpperCase()}`
+      return;
+    }
+    window.location.href = `/stocks/${match[1].toUpperCase()}`
   };
 
   const handleSearchTermLookup = (response, status) => {
@@ -44,12 +50,14 @@ export function StockSearchComponent(props) {
   }, [searchTerm]);
 
   return (
-    <form onSubmit={handleSearchSubmit}>
+    <form style={{padding: "0px 10% 0px 10%",width: "75%"}} onSubmit={handleSearchSubmit}>
       <Autocomplete 
         id="demo" 
         value={searchTerm}
         freeSolo
-        options={searchResults.map((option) => option.ticker)}
+        options={searchResults.map((option) => {
+          return option.ticker + " - " + option.company_name
+        })}
         getOptionLabel={option => option}
         getOptionSelected={(option, value) => option === value.ticker}
         onChange={handleSearchTermChange} 
@@ -66,17 +74,6 @@ export function StockSearchComponent(props) {
     </form>
   );
 }
-
-const testList = [
-  { ticker: "AAPL" },
-  { ticker: "AMZN" },
-  { ticker: "TSLA" },
-  { ticker: "MSFT" },
-  { ticker: "FORD" },
-  { ticker: "GE" },
-  { ticker: "SMSG" },
-  { ticker: "UAVS" },
-]
 
 const useStyles = makeStyles((theme) => ({
   search: {

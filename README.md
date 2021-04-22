@@ -14,12 +14,6 @@ At this moment we do not have a complete list of the necessary APIs and Librarie
 * Stock Prices API: [Finnhub.io](https://finnhub.io/docs/api)
 * Historical data: investpy
 * Neural network: keras functional API
-* NOT USED:
-* Google Trends API: [pytrends](https://pypi.org/project/pytrends/)
-* Task Management: [Celery](https://docs.celeryproject.org/en/stable/index.html)
-* Message Broker [RabbitMQ](https://www.rabbitmq.com/documentation.html)
-* requests
-* websocket_client
 
 ## Setup
 

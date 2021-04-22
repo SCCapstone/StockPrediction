@@ -23,9 +23,10 @@ export function StockLink(props) {
   
   const handleBackendPredictionLookup = (response, status) => {
     if (status === 200) {
+      console.log(response);
       const responsePrediction = response.prediction;
       const newPrediction =
-        responsePrediction !== null
+        (responsePrediction !== null && response.stock.ticker == stock.ticker)
           ? {
               future_value: responsePrediction.future_value,
               upper_value: responsePrediction.upper_value,
@@ -67,7 +68,7 @@ export function StockLink(props) {
   
 
   useEffect(() => {
-    if (!didPredictionLookup && !currPrediction) {
+    if (!didPredictionLookup && !currPrediction && stock.ticker) {
       apiPredictionLookup(stock.ticker, handleBackendPredictionLookup);
     }
     if (!currPrediction && prediction) {

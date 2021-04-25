@@ -1,5 +1,18 @@
 {% extends 'base.html' %}
 
+<p>Welcome to Stock Prediction Home Page</p>
+
+<div><p>Welcome to the Stock Predictor home page, where you are able to predict the</p></div>
+<p>prices of your favorite stocks in the stock market. To begin, simply search a stock ticker, and hit enter!</p></div>
+<div></div>
+<img src="https://user-images.githubusercontent.com/65428832/115729365-5ba3b300-a353-11eb-81a9-808eebcce8c2.png">
+<div></div>
+<p>Once your stock has loaded, you have the option to add it to your watchlist. After adding it to your watchlist,</p>
+<div></div>
+<img src="https://user-images.githubusercontent.com/65428832/115729385-5fcfd080-a353-11eb-8099-d263f6492f10.png">
+<div></div>
+<p>you can either have the price predicted, which will give you a 30 day forecast prediction,</p>
+<p>or you can removce the stock if you are no longer interested.</p>
 {% block content %}
 
 <!-- <p>Welcome to Stock Prediction Home Page</p>
@@ -29,5 +42,11 @@
 <p>or you can removce the stock if you are no longer interested.</p> -->
 
 <div id='stocks-list'></div>
-
+<style>
+#stocks-list
+{
+    position: absolute; /*or fixed*/
+    right: 0px;
+}
+</style>
 {% endblock content %}

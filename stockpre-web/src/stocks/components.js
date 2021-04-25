@@ -15,9 +15,8 @@ export function StockLink(props) {
     didPredictionLookup,
     prediction,
     handleBackendPredictionLookup } = props;
-  const [currentPrice, setCurrentPrice] = useState(1.0);
-  const [openingPrice, setOpeningPrice] = useState(1.0);
-  const [percentChange, setPercentChange] = useState(0.0);
+  const [currentPrice, setCurrentPrice] = useState("---");
+  const [percentChange, setPercentChange] = useState("---");
   const [currPrediction, setCurrPrediction] = useState(null);
   const classes = useStyles();
   
@@ -27,12 +26,22 @@ export function StockLink(props) {
     window.location.href = `/stocks/${stock.ticker.toUpperCase()}`;
   };
 
-  const update = async () => {
-    const fullfilled_request = await(await (fetch(`https://finnhub.io/api/v1/quote?symbol=${stock.ticker}&token=${authToken}`))).json();
-    console.log("Filled", fullfilled_request);
-    setOpeningPrice(fullfilled_request['o']);
-    setCurrentPrice(fullfilled_request['c']);
-    setPercentChange((currentPrice - openingPrice) / openingPrice);
+  const update = () => {
+    fetch(`https://finnhub.io/api/v1/quote?symbol=${stock.ticker}&token=${authToken}`).then(request => {
+      request.json().then(fullfilled_request => {
+        console.log("Filled", fullfilled_request);
+        try {
+          var _openingPrice = parseFloat(fullfilled_request['o']);
+          var _currentPrice = parseFloat(fullfilled_request['c']);
+          setCurrentPrice(_currentPrice.toFixed(2));
+          var _percentChange = 100.0 * (_currentPrice - _openingPrice) / _openingPrice;
+          setPercentChange((_percentChange < 0.0 ? "" : "+") + _percentChange.toFixed(2));
+        } catch {
+          setCurrentPrice("---");
+          setPercentChange("---");
+        }
+      });
+    });
   };
 
   useEffect(() => {
@@ -71,10 +80,7 @@ export function StockLink(props) {
           <Grid container direction="row" alignContent="flex-start" justify="space-evenly">
             <Grid item direction="column" alignItems="flex-start" justify="space-evenly">
               <Typography>
-                Current Price: {currentPrice.toFixed(2)}
-              </Typography>
-              <Typography>
-                Percent Change: ({percentChange >= 0 && "+"}{(percentChange * 100).toFixed(2)}%)
+                Current Price: {currentPrice} ({percentChange}%)
               </Typography>
             </Grid>
             <Grid item direction="center" alignItems="flex-end" justify="space-evenly">

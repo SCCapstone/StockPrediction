@@ -78,12 +78,10 @@ export function Stock(props) {
 		if (didPredictionLookup === false && !currPrediction) {
 		  apiPredictionLookup(symbol, handleBackendPredictionLookup);
 		};
-		if (prediction) {
-			if (!currPrediction) {
-				currPrediction = prediction;
-				console.log("prediction set")
-				console.log(currPrediction);
-			}
+		if (prediction && !currPrediction) {
+			currPrediction = prediction;
+			console.log("prediction set")
+			console.log(currPrediction);
 		}
 		if (currPrediction !== null && tvWidget !== null) {
 			const currTime = new Date().getTime() / 1000;
@@ -175,7 +173,7 @@ export function Stock(props) {
 
 	return (
 		<div>
-			<Card className={classes.root}>
+			<Card pb-2 className={classes.root}>
 				<CardContent className={classes.content}>
 					<div id={ defaultSettings.containerId } className={ 'TVChartContainer' }/>
 				</CardContent>

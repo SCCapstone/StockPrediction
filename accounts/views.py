@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 
-
 def login_view(request, *args, **kwargs):
     if not request.user.is_authenticated:
         form = AuthenticationForm(request, data=request.POST or None)
@@ -19,7 +18,6 @@ def login_view(request, *args, **kwargs):
         return render(request, "accounts/auth.html", context)
     else:
         return redirect("/")
-
 
 def logout_view(request, *args, **kwargs):
     if request.user.is_authenticated:

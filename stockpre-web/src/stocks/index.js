@@ -1,5 +1,5 @@
 import { StockDetailComponent, StockListComponent } from './components'
-import { ActionButton } from './buttons'
+import { ActionButton, AddRemoveButton } from './buttons'
 import { apiStockLookup, apiStockList, apiStockAction, apiPredictionLookup } from './lookup'
 
 export {
@@ -8,6 +8,7 @@ export {
     apiStockLookup,
     apiStockList,
     ActionButton,
+    AddRemoveButton,
     apiStockAction,
     apiPredictionLookup
 }

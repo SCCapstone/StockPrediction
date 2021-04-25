@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { apiStockLookup, apiPredictionLookup } from "./lookup";
 import { Stock } from "./detail";
 import { StockList } from "./list";
-import { ActionButton } from "./buttons";
+import { ActionButton, AddRemoveButton } from "./buttons";
 import { authToken } from '../App.js';
 
 import { Button, Card, CardContent, CardHeader, Chip, Grid, makeStyles, Typography } from '@material-ui/core'
@@ -50,19 +50,7 @@ export function StockLink(props) {
       clearInterval(interval);
     }
   }, [didPredictionLookup, handleBackendPredictionLookup, prediction]);
-  
-  // Zane's working example
-  // return (
-  //   <div onClick={handleStockLink} className="border m-3 p-3">
-  //     <h5>{stock.ticker}</h5>
-  //     <h6>{stock.company_name}</h6> 
-  //     <div onClick={handleStockLink}>
-  //       {currentPrice.toFixed(2)} ({percentChange >= 0 && <span>+</span>}{(percentChange * 100).toFixed(2)}%)
-  //     </div>
-  //   </div>
-  // );
 
-  // Max testing
   return (
     <Grid container spacing={0} direction="column" alignItems="center" justify="space-evenly">
       <Card className={classes.root}>
@@ -71,7 +59,7 @@ export function StockLink(props) {
           <Grid container direction="row" alignContent="flex-start" justify="space-evenly">
             <Grid item direction="column" alignItems="flex-start" justify="space-evenly">
               <Typography>
-                Current Price: {currentPrice.toFixed(2)}
+                Current Price: {currentPrice != 1.00 ? currentPrice.toFixed(2) : "Loading..."}
               </Typography>
               <Typography>
                 Percent Change: ({percentChange >= 0 && "+"}{(percentChange * 100).toFixed(2)}%)
@@ -106,7 +94,8 @@ const useStyles = makeStyles({
   },
   button: {
     backgroundColor: 'white',
-    color: 'black'
+    color: 'black',
+    borderRadius: '50px'
   }
 })
 
@@ -209,7 +198,7 @@ export function StockDetailComponent(props) {
           handleBackendPredictionLookup={handleBackendPredictionLookup}
         />
         <Grid container direction="row" alignItems="center" justify="center">
-          <ActionButton
+          <AddRemoveButton
             ticker={ticker}
             predict={false}
             isTracking={isTracking}

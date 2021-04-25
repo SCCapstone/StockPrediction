@@ -15,12 +15,11 @@ export function StockLink(props) {
     didPredictionLookup,
     prediction,
     handleBackendPredictionLookup } = props;
-  const [currentPrice, setCurrentPrice] = useState("---");
-  const [percentChange, setPercentChange] = useState("---");
+  const [currentPrice, setCurrentPrice] = useState("Loading...");
+  const [percentChange, setPercentChange] = useState("Loading...");
   const [currPrediction, setCurrPrediction] = useState(null);
   const classes = useStyles();
   
-
   const handleStockLink = (event) => {
     event.preventDefault();
     window.location.href = `/stocks/${stock.ticker.toUpperCase()}`;
@@ -35,10 +34,10 @@ export function StockLink(props) {
           var _currentPrice = parseFloat(fullfilled_request['c']);
           setCurrentPrice(_currentPrice.toFixed(2));
           var _percentChange = 100.0 * (_currentPrice - _openingPrice) / _openingPrice;
-          setPercentChange((_percentChange < 0.0 ? "" : "+") + _percentChange.toFixed(2));
+          setPercentChange((_percentChange < 0.0 ? "" : "+") + _percentChange.toFixed(2) + "%");
         } catch {
-          setCurrentPrice("---");
-          setPercentChange("---");
+          setCurrentPrice("Loading...");
+          setPercentChange("Loading...");
         }
       });
     });
@@ -68,10 +67,10 @@ export function StockLink(props) {
           <Grid container direction="row" alignContent="flex-start" justify="space-evenly">
             <Grid item direction="column" alignItems="flex-start" justify="space-evenly">
               <Typography>
-                Current Price: {currentPrice != 1.00 ? currentPrice.toFixed(2) : "Loading..."}
+                Current Price: {currentPrice}
               </Typography>
               <Typography>
-                Percent Change: ({percentChange >= 0 && "+"}{(percentChange * 100).toFixed(2)}%)
+                Percent Change: {percentChange}
               </Typography>
             </Grid>
             <Grid item direction="center" alignItems="flex-end" justify="space-evenly">

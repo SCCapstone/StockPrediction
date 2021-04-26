@@ -9,7 +9,6 @@ from django.db.models.functions import Length
 from ..models import Stock
 from ..serializers import StockSerializer
 from prediction.models import Prediction
-from sqlalchemy import and_,or_
 
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])

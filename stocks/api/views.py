@@ -10,7 +10,6 @@ from ..models import Stock
 from ..serializers import StockSerializer
 from prediction.models import Prediction
 
-from sqlalchemy import and_,or_
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
 def stock_detail_api_view(request, ticker, *args, **kwargs):

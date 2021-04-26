@@ -29,6 +29,9 @@ ALLOWED_HOSTS = ['127.0.0.1', 'localhost',
                  '.herokuapp.com', 'stock-prediction2.herokuapp.com']
 LOGIN_URL = '/login'
 
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = True
+
 
 # Application definition
 

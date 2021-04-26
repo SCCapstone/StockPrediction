@@ -10,12 +10,10 @@ djangorestframework = "*"
 gunicorn = "*"
 psycopg2-binary = "*"
 django-heroku = "*"
-investpy = "*"
 yfinance = "*"
 keras = "*"
 numpy = "*"
-tensorflow = "*"
-sqlalchemy = "*"
+tensorflow-cpu = "*"
 
 [dev-packages]
 

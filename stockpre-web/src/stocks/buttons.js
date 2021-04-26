@@ -71,14 +71,13 @@ export function AddRemoveButton (props) {
     }
 }
 
-// Change this up so that if display == remove, render dialog and handle the rest through that
 export function ActionButton (props) {
     const classes = useStyles();
     const {ticker, isTracking, predict, handleActionBackend} = props
 
     const handleClick = (event) => {
-            event.preventDefault()
-            apiStockAction(ticker, predict, handleActionBackend)
+        event.preventDefault()
+        apiStockAction(ticker, predict, handleActionBackend)
     }
     const display = isTracking === true ? 'Remove' : 'Add'
     return predict === true ? <Button variant="contained" className={classes.button} onClick={handleClick}>Predict</Button> : <Button variant="contained" className={classes.button} onClick={handleClick}> {display} </Button>

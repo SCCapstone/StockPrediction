@@ -11,14 +11,14 @@ import { HeaderComponent } from "./navigation";
 
 const e = React.createElement;
 
-const navigationEl = document.getElementById("navbar");
-if (navigationEl) {
-  ReactDOM.render(e(HeaderComponent, navigationEl.dataset), navigationEl);
-}
-
 const stocksListEl = document.getElementById("stocks-list");
 if (stocksListEl) {
   ReactDOM.render(e(StockListComponent, stocksListEl.dataset), stocksListEl);
+}
+
+const navigationEl = document.getElementById("navbar");
+if (navigationEl) {
+  ReactDOM.render(e(HeaderComponent, navigationEl.dataset), navigationEl);
 }
 
 const stockDetailElements = document.querySelectorAll(".stock-detail");

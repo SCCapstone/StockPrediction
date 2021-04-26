@@ -4,7 +4,6 @@ import os
 #import numpy as np
 #import keras
 import random
-#import investpy as iv
 import yfinance as yf
 
 
@@ -158,7 +157,6 @@ def get_prediction(ticker):
     upper = random.random()
     lower = random.random()
     data = yf.Ticker(ticker).history(period="max")
-    #data = iv.get_stock_recent_data(stock=ticker, country='United States')
     print(data)
     prediction = data['Open'][-1]
     upper_value = prediction * (1 + upper)

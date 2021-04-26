@@ -12,6 +12,7 @@ psycopg2-binary = "*"
 django-heroku = "*"
 investpy = "*"
 yfinance = "*"
+sqlalchemy = "*"
 
 [dev-packages]
 

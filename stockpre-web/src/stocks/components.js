@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { apiStockLookup, apiPredictionLookup } from "./lookup";
+import { apiStockLookup, apiPredictionLookup, apiStockAction } from "./lookup";
 import { Stock } from "./detail";
 import { StockList } from "./list";
 import { ActionButton, AddRemoveButton } from "./buttons";
@@ -24,6 +24,11 @@ export function StockLink(props) {
     event.preventDefault();
     window.location.href = `/stocks/${stock.ticker.toUpperCase()}`;
   };
+
+  const handleRemove = (event) => {
+    event.preventDefault();
+    apiStockAction(stock.ticker, false, ()=>{});
+  }
 
   const update = () => {
     fetch(`https://finnhub.io/api/v1/quote?symbol=${stock.ticker}&token=${authToken}`).then(request => {
@@ -58,7 +63,19 @@ export function StockLink(props) {
       clearInterval(interval);
     }
   }, [didPredictionLookup, handleBackendPredictionLookup, prediction]);
+  
+  // Zane's working example
+  // return (
+  //   <div onClick={handleStockLink} className="border m-3 p-3">
+  //     <h5>{stock.ticker}</h5>
+  //     <h6>{stock.company_name}</h6> 
+  //     <div onClick={handleStockLink}>
+  //       {currentPrice.toFixed(2)} ({percentChange >= 0 && <span>+</span>}{(percentChange * 100).toFixed(2)}%)
+  //     </div>
+  //   </div>
+  // );
 
+  // Max testing
   return (
     <Grid container spacing={0} direction="column" alignItems="center" justify="space-evenly">
       <Card className={classes.root}>
@@ -70,14 +87,14 @@ export function StockLink(props) {
                 Current Price: {currentPrice}
               </Typography>
               <Typography>
-                Percent Change: {percentChange}
+                Current Price: {percentChange}
               </Typography>
             </Grid>
-            <Grid item>
-              <Button className={classes.button} variant="contained" onClick={handleStockLink}>
-                Details
-              </Button>
-            </Grid>
+              <Grid item>
+                <Button className={classes.button} variant="contained" onClick={handleStockLink}>
+                  Details
+                </Button>
+              </Grid>
           </Grid>
         </CardContent>
       </Card>
@@ -219,7 +236,6 @@ function PredictionComponent(props) {
     }
   });
 
-  // Max testing
   return prediction !== null ? (
     <div className="mb-1">
       <p>{}</p>
@@ -318,5 +334,3 @@ const useStyles = makeStyles({
     width: '100%'
   }
 })
-
-// <img src="https://user-images.githubusercontent.com/65428832/115729365-5ba3b300-a353-11eb-81a9-808eebcce8c2.png"/>

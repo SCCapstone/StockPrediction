@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
     right: theme.spacing(2)
   },
   toolbar: {
-    marginBottom: '5px'
+    marginBottom: "5px"
   }
 }));
 
@@ -78,7 +78,7 @@ export const HeaderComponent = (props) => {
           <KeyboardArrowUpRounded/>
         </Fab>
       </ScrollTop>
-      <br></br>
+      <br/>
     </React.Fragment>
   );
 }

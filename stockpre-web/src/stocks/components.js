@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { apiStockLookup, apiPredictionLookup } from "./lookup";
+import { apiStockLookup, apiPredictionLookup, apiStockAction } from "./lookup";
 import { Stock } from "./detail";
 import { StockList } from "./list";
-import { ActionButton, AddRemoveButton } from "./buttons";
+import { ActionButton } from "./buttons";
 import { authToken } from '../App.js';
 
-import { Button, Card, CardActionArea, CardContent, CardHeader, CardMedia, Chip, Grid, makeStyles, Paper, Typography } from '@material-ui/core'
+import { Button, Card, CardContent, CardHeader, Chip, Grid, makeStyles, Typography } from '@material-ui/core'
 
 // Shows singe quote and prediction. Routes to detailed view
 export function StockLink(props) {
@@ -15,15 +15,21 @@ export function StockLink(props) {
     didPredictionLookup,
     prediction,
     handleBackendPredictionLookup } = props;
-  const [currentPrice, setCurrentPrice] = useState("Loading...");
-  const [percentChange, setPercentChange] = useState("Loading...");
+  const [currentPrice, setCurrentPrice] = useState("---");
+  const [percentChange, setPercentChange] = useState("---");
   const [currPrediction, setCurrPrediction] = useState(null);
   const classes = useStyles();
   
+
   const handleStockLink = (event) => {
     event.preventDefault();
     window.location.href = `/stocks/${stock.ticker.toUpperCase()}`;
   };
+
+  const handleRemove = (event) => {
+    event.preventDefault();
+    apiStockAction(stock.ticker, false, ()=>{});
+  }
 
   const update = () => {
     fetch(`https://finnhub.io/api/v1/quote?symbol=${stock.ticker}&token=${authToken}`).then(request => {
@@ -34,10 +40,10 @@ export function StockLink(props) {
           var _currentPrice = parseFloat(fullfilled_request['c']);
           setCurrentPrice(_currentPrice.toFixed(2));
           var _percentChange = 100.0 * (_currentPrice - _openingPrice) / _openingPrice;
-          setPercentChange((_percentChange < 0.0 ? "" : "+") + _percentChange.toFixed(2) + "%");
+          setPercentChange((_percentChange < 0.0 ? "" : "+") + _percentChange.toFixed(2));
         } catch {
-          setCurrentPrice("Loading...");
-          setPercentChange("Loading...");
+          setCurrentPrice("---");
+          setPercentChange("---");
         }
       });
     });
@@ -58,7 +64,19 @@ export function StockLink(props) {
       clearInterval(interval);
     }
   }, [didPredictionLookup, handleBackendPredictionLookup, prediction]);
+  
+  // Zane's working example
+  // return (
+  //   <div onClick={handleStockLink} className="border m-3 p-3">
+  //     <h5>{stock.ticker}</h5>
+  //     <h6>{stock.company_name}</h6> 
+  //     <div onClick={handleStockLink}>
+  //       {currentPrice.toFixed(2)} ({percentChange >= 0 && <span>+</span>}{(percentChange * 100).toFixed(2)}%)
+  //     </div>
+  //   </div>
+  // );
 
+  // Max testing
   return (
     <Grid container spacing={0} direction="column" alignItems="center" justify="space-evenly">
       <Card className={classes.root}>
@@ -67,15 +85,15 @@ export function StockLink(props) {
           <Grid container direction="row" alignContent="flex-start" justify="space-evenly">
             <Grid item direction="column" alignItems="flex-start" justify="space-evenly">
               <Typography>
-                Current Price: {currentPrice}
-              </Typography>
-              <Typography>
-                Percent Change: {percentChange}
+                Current Price: {currentPrice} ({percentChange}%)
               </Typography>
             </Grid>
             <Grid item direction="center" alignItems="flex-end" justify="space-evenly">
               <Button className={classes.button} variant="contained" onClick={handleStockLink}>
                 Details
+              </Button>
+              <Button className={classes.button} variant="contained" onClick={handleRemove}>
+                Delete
               </Button>
             </Grid>
           </Grid>
@@ -84,6 +102,27 @@ export function StockLink(props) {
     </Grid>
   );
 }
+
+const useStyles = makeStyles({
+  root: {
+    background: 'linear-gradient(180deg, #FE6B8B 30%, #E8A87C 90%)',
+    marginTop: '5px',
+    marginBottom: '5px',
+    borderRadius: '50px',
+    width: 425
+  },
+  header: {
+    textAlign: 'center'
+  },
+  prediction: {
+    background: 'linear-gradient(180deg, #FE6B8B 30%, #E8A87C 90%)',
+    marginLeft: "5px"
+  },
+  button: {
+    backgroundColor: 'white',
+    color: 'black'
+  }
+})
 
 export function StockListComponent(props) {
   const [newStocks, setNewStocks] = useState([]);
@@ -184,7 +223,7 @@ export function StockDetailComponent(props) {
           handleBackendPredictionLookup={handleBackendPredictionLookup}
         />
         <Grid container direction="row" alignItems="center" justify="center">
-          <AddRemoveButton
+          <ActionButton
             ticker={ticker}
             predict={false}
             isTracking={isTracking}
@@ -219,6 +258,14 @@ function PredictionComponent(props) {
     }
   });
 
+  // Zane working code
+  // return prediction !== null ? (
+  //   <div>
+  //     Prediction: {prediction.future_value.toFixed(2)} Range: {prediction.lower_value.toFixed(2)} -{" "}
+  //     {prediction.upper_value.toFixed(2)} on {prediction.prediction_date}
+  //   </div>
+  // ) : null;
+
   // Max testing
   return prediction !== null ? (
     <div className="mb-1">
@@ -228,95 +275,4 @@ function PredictionComponent(props) {
       <Chip label={"Date: " + prediction.prediction_date} className={classes.prediction}/>
     </div>
   ) : null;
-};
-
-const popularStocks = [
-  { ticker: "AAPL", company_name: "Apple Inc." },
-  { ticker: "TSLA", company_name: "Tesla, Inc." },
-  { ticker: "AMZN", company_name: "Amazon.com, Inc." },
-  { ticker: "NFLX", company_name: "Netflix, Inc." },
-  { ticker: "MSFT", company_name: "Microsoft Corporation" }
-];
-
-export function LandingPageComponent(props) {
-  const classes = useStyles();
-  return (
-    <div>
-      <Grid container direction="row" xs={12}>
-        <Grid container direction="column" xs={6} alignItems="center">
-          <Typography variant="h4" className={classes.h4}>
-            Stock Prediction - Home
-          </Typography>
-          <Typography variant="h6" align="center">
-            Welcome to the Stock Prediction home page! Here you are able to predict the prices of your favorite stocks on the stock market. To begin, simply search a company name or stock ticker and hit enter.
-          </Typography>
-          <Grid item>
-            <Card className={classes.landingRoot}>
-              <CardMedia className={classes.landingMedia} component="img" image="https://user-images.githubusercontent.com/65428832/115729365-5ba3b300-a353-11eb-81a9-808eebcce8c2.png"/>
-            </Card>
-          </Grid>
-          <Typography variant="h6" align="center">
-            Once your stock has loaded, you have the option to add it to your watchlist. After adding it to your watchlist, you can predict the stock's price giving you a 30 day forecast, or you can remove it if you are no longer interested.
-          </Typography>
-          <Grid item>
-            <Card className={classes.landingRoot}>
-              <CardMedia className={classes.landingMedia} component="img" image="https://user-images.githubusercontent.com/65428832/115729385-5fcfd080-a353-11eb-8099-d263f6492f10.png"/>
-            </Card>
-          </Grid>
-          <Typography variant="h6" align="center">
-            Thanks for using our website, we wish you the best of luck in the market!
-          </Typography>
-        </Grid>
-        <Grid container direction="column" xs={6} alignItems="center" >
-          <Typography variant="h4" className={classes.h4}>
-            Popular Stocks
-          </Typography>
-          <StockList newStocks={popularStocks} {...props}>
-
-          </StockList>
-        </Grid>
-      </Grid>
-      <Typography variant="h4" className={classes.h4} align="center">
-        Your Tracked Stocks
-      </Typography>
-    </div>
-  )
-};
-
-const useStyles = makeStyles({
-  root: {
-    background: 'linear-gradient(180deg, #FE6B8B 30%, #E8A87C 90%)',
-    marginTop: '5px',
-    marginBottom: '5px',
-    borderRadius: '50px',
-    width: 425
-  },
-  header: {
-    textAlign: 'center'
-  },
-  prediction: {
-    background: 'linear-gradient(180deg, #FE6B8B 30%, #E8A87C 90%)',
-    marginLeft: '5px'
-  },
-  button: {
-    backgroundColor: 'white',
-    color: 'black',
-    borderRadius: '50px'
-  },
-  landingRoot: {
-    maxWidth: 550,
-    textAlign: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-    margin: '5px'
-  },
-  h4: {
-    color: '#FE6B8B'
-  },
-  landingMedia: {
-    height: '100%',
-    width: '100%'
-  }
-})
-
-// <img src="https://user-images.githubusercontent.com/65428832/115729365-5ba3b300-a353-11eb-81a9-808eebcce8c2.png"/>
+}

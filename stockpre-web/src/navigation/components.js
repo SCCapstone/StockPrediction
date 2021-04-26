@@ -20,15 +20,13 @@ const useStyles = makeStyles((theme) => ({
   },
   navDisplayFlex: {
     display: "flex",
-    justifyContent: "center",
-    alignItems: "center"
+    justifyContent: "space-between"
   },
   navbarDisplayFlex: {
     display: "flex",
     justifyContent: "space-between"
   },
   linkText: {
-    marginTop: "5px",
     textDecoration: "none",
     textTransform: "none",
     color: "white",
@@ -41,9 +39,6 @@ const useStyles = makeStyles((theme) => ({
     position: "fixed",
     bottom: theme.spacing(2),
     right: theme.spacing(2)
-  },
-  toolbar: {
-    marginBottom: '5px'
   }
 }));
 
@@ -54,7 +49,7 @@ export const HeaderComponent = (props) => {
       <Toolbar id="back-to-top-anchor"/>
       <ElevationScroll {...props}>
         <AppBar className={classes.colorScheme}>
-          <Toolbar className={classes.toolbar} id="back-to-top-anchor">
+          <Toolbar id="back-to-top-anchor">
             <Container maxWidth="xl" className={classes.navbarDisplayFlex}>
               <IconButton href="/" className={classes.linkText} edge="start" color="inherit" aria-label="home">
                 <HomeRounded fontSize="large"/>
@@ -78,7 +73,6 @@ export const HeaderComponent = (props) => {
           <KeyboardArrowUpRounded/>
         </Fab>
       </ScrollTop>
-      <br></br>
     </React.Fragment>
   );
 }

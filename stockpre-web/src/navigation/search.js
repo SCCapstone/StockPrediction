@@ -50,7 +50,7 @@ export function StockSearchComponent(props) {
   }, [searchTerm]);
 
   return (
-    <form style={{padding: "0px 10% 0px 10%", width: "75%"}} onSubmit={handleSearchSubmit}>
+    <form style={{padding: "0px 10% 0px 10%",width: "75%"}} onSubmit={handleSearchSubmit}>
       <Autocomplete 
         id="demo" 
         value={searchTerm}
@@ -60,7 +60,7 @@ export function StockSearchComponent(props) {
         })}
         getOptionLabel={option => option}
         getOptionSelected={(option, value) => option === value.ticker}
-        onChange={handleSearchTermChange}
+        onChange={handleSearchTermChange} 
         onInputChange={(event) => handleSearchTermChange(event, undefined)}
         renderInput={(params) => (
           <TextField

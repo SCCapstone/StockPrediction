@@ -1,7 +1,15 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django import template
 
+register = template.Library()
+
+# might be used later
+@register.filter(name='add_class')
+def add_class(value, arg):
+    return value.as_widget(attrs={'class': arg})
+    
 def login_view(request, *args, **kwargs):
     if not request.user.is_authenticated:
         form = AuthenticationForm(request, data=request.POST or None)
@@ -18,6 +26,7 @@ def login_view(request, *args, **kwargs):
         return render(request, "accounts/auth.html", context)
     else:
         return redirect("/")
+
 
 def logout_view(request, *args, **kwargs):
     if request.user.is_authenticated:

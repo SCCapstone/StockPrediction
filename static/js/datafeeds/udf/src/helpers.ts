@@ -8,6 +8,7 @@ export interface UdfResponse {
 
 export interface UdfOkResponse extends UdfResponse {
 	s: 'ok';
+	
 }
 
 export interface UdfErrorResponse {

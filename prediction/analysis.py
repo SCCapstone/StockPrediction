@@ -4,8 +4,7 @@ import os
 #import numpy as np
 #import keras
 import random
-#import investpy as iv
-import yfinance as yf
+import investpy as iv
 
 
 SAMPLE_P = 50
@@ -157,9 +156,7 @@ def get_rsi(percents, train=True):
 def get_prediction(ticker):
     upper = random.random()
     lower = random.random()
-    data = yf.Ticker(ticker).history(period="max")
-    #data = iv.get_stock_recent_data(stock=ticker, country='United States')
-    print(data)
+    data = iv.get_stock_recent_data(stock=ticker, country='United States')
     prediction = data['Open'][-1]
     upper_value = prediction * (1 + upper)
     lower_value = prediction * lower

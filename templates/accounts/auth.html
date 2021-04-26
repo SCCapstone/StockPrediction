@@ -1,14 +1,18 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class='col-10 col-md-r mx-auto'>
-    <h1>{{title}}</h1>
-    {% if description %}
-        <p>{{description}}</p>
-    {% endif %}
-    {% include "components/form.html" with form=form btn_label=btn_label %}
+<div class="row" style="margin-top: 5%;">
+    <div class='col-lg-4'></div>
+    <div class='col-lg-4 col-md-r mx-auto'>
+        <h1 style="margin-bottom: 5%;">{{title}}</h1>
+        {% if description %}
+            <p>{{description}}</p>
+        {% endif %}
+        {% include "components/form.html" with form=form btn_label=btn_label %}
+        {% if extras %}
+        <div style="margin-top: 5%;"><a href="/register">{{extras}}</a></div>
+        {% endif %}
+    </div>
+    <div class='col-lg-4'></div>
 </div>
-{% if extras %}
-<div style="margin-left: 125px;"><a href="/register">{{extras}}</a></div>
-{% endif %}
 
 {% endblock content %}

@@ -7,7 +7,7 @@ The Stock Prediction web app is a Django web app where users can track stock mar
 ## External Requirements
 
 At this moment we do not have a complete list of the necessary APIs and Libraries. We will add one as soon as possible. Here are the ones we have at the moment.
-*CURRENTLY USED:
+CURRENTLY USED:
 * React.js
 * Django Rest Framework (pip install djangorestframework)
 * Cors Headers (pip install django-cors-headers)
@@ -61,11 +61,8 @@ Location of tests:
 
 ## Testing Technology
 
-TBD.
-
-## Running Tests
-
-In due time.
+* Django Test used for the creation of test case objects.
+* Django REST Framework used for the creation of test clients.
 
 # Authors
 

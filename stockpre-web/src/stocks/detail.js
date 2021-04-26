@@ -22,7 +22,7 @@ const defaultSettings = {
 	interval: 'D',
 	containerId: 'tv_chart_container',
 	datafeedUrl: 'https://demo_feed.tradingview.com',
-	libraryPath: '/charting_library/',
+	libraryPath: '/charting_library/', // Change to "/static/js/charting_library/" for django local and production
 	chartsStorageUrl: 'https://saveload.tradingview.com',
 	chartsStorageApiVersion: '1.1',
 	clientId: 'tradingview.com',
@@ -174,7 +174,7 @@ export function Stock(props) {
 
 	return (
 		<div>
-			<Card pb-2 className={classes.root}>
+			<Card className={classes.root}>
 				<CardContent className={classes.content}>
 					<div id={ defaultSettings.containerId } className={ 'TVChartContainer' }/>
 				</CardContent>
@@ -186,7 +186,8 @@ export function Stock(props) {
 
 const useStyles = makeStyles({
 	root: {
-		marginTop: '15px'
+		marginTop: '15px',
+		marginBottom: '4px'
 	},
 	content: {
 		borderRadius: '50px'

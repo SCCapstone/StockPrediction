@@ -65,7 +65,7 @@ export function StockLink(props) {
         <CardHeader className={classes.header} title={stock.company_name} subheader={stock.ticker}/>
         <CardContent>
           <Grid container direction="row" alignContent="flex-start" justify="space-evenly">
-            <Grid item direction="column" alignItems="flex-start" justify="space-evenly">
+            <Grid item>
               <Typography>
                 Current Price: {currentPrice}
               </Typography>
@@ -73,7 +73,7 @@ export function StockLink(props) {
                 Percent Change: {percentChange}
               </Typography>
             </Grid>
-            <Grid item direction="center" alignItems="flex-end" justify="space-evenly">
+            <Grid item>
               <Button className={classes.button} variant="contained" onClick={handleStockLink}>
                 Details
               </Button>

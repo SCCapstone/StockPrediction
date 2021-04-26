@@ -1,9 +1,10 @@
 import os
-#import pathlib
+import pathlib
 #import tensorflow as tf
-#import numpy as np
-#import keras
+import numpy as np
+import keras
 import random
+#import investpy as iv
 import yfinance as yf
 
 
@@ -154,33 +155,28 @@ def get_rsi(percents, train=True):
 
 
 def get_prediction(ticker):
-    upper = random.random()
-    lower = random.random()
-    data = yf.Ticker(ticker).history(period="max")
-    print(data)
-    prediction = data['Open'][-1]
-    upper_value = prediction * (1 + upper)
-    lower_value = prediction * lower
-    return (prediction, upper_value, lower_value)
-    '''
-    price_map = Data.toFixed(2)Collection.request_historical(ticker)
-    volumes = price_map['v']
-    opens = price_map['o']
-    highs = price_map['h']
-    lows = price_map['l']
-    closes = price_map['c']
+    price_map = yf.Ticker(ticker).history(period="max")
+    volumes = price_map['Volume'][1:].array
+    opens = price_map['Open'][1:].array
+    highs = price_map['High'][1:].array
+    lows = price_map['Low'][1:].array
+    closes = price_map['Close'][1:].array
     percents = []
     for o, c in zip(opens,closes):
         percents.append(100 * (c - o)/o)
-    rsi = get_rsi(percents)
-    macd = get_macd(closes)
+    rsi = get_rsi(percents, train=False)
+    macd = get_macd(closes, train=False)
     rsi = np.array(rsi)
     macd = np.array(macd)
     p = pathlib.Path(__file__).parent.absolute() / 'test_model_tf'#'spy_macd_rsi_v0'
     model = keras.models.load_model(p)
-    print(len(rsi))
-    print(len(macd))
-    pred = model.predict([rsi, macd])
-    pred = float(pred)
-    return pred
-    '''
+    pred_range = model.predict([rsi, macd]).squeeze()
+    pred_range.sort()
+    max_percentage = max(pred_range)
+    min_percentage = min(pred_range)
+    weighted_average_percentage = np.average(pred_range)
+    #print('MAX: ', max_percentage, ' MIN: ', min_percentage, ' AVG: ', weighted_average_percentage)
+    max_value = closes[-1] * (max_percentage + 1)
+    min_value = closes[-1] * (1 + min_percentage)
+    weighted_value = closes[-1] * (weighted_average_percentage + 1)
+    return (weighted_value, max_value, min_value )

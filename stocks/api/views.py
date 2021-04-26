@@ -10,11 +10,12 @@ from ..models import Stock
 from ..serializers import StockSerializer
 from prediction.models import Prediction
 
-
+from sqlalchemy import and_,or_
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
 def stock_detail_api_view(request, ticker, *args, **kwargs):
-    qs = Stock.objects.filter(ticker=ticker)
+    # qs = Stock.objects.filter(ticker=ticker)
+    qs= Stock.objects.filter(Q(ticker=ticker) | Q(company_name__icontains=ticker))
     if not qs.exists():
         return Response({}, status=404)
     obj = qs.first()
@@ -36,12 +37,14 @@ def stock_list_api_view(request, *args, **kwargs):
 @permission_classes([IsAuthenticated])
 def stock_search_api_view(request, *args, **kwargs):
     term = request.data.get('searchTerm')
+    print(term)
     if not term:
         term = ''
     qs = Stock.objects.filter(Q(ticker__iexact=term) | Q(
         ticker__icontains=term) | Q(company_name__icontains=term)).distinct()[:10]
-
+    print(qs)
     serializer = StockSerializer(qs, many=True)
+    # print(serializer.data)
     return Response(serializer.data, status=200)
 
 

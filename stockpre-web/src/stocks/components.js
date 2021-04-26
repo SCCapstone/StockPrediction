@@ -5,7 +5,7 @@ import { StockList } from "./list";
 import { ActionButton, AddRemoveButton } from "./buttons";
 import { authToken } from '../App.js';
 
-import { Button, Card, CardContent, CardHeader, Chip, Grid, makeStyles, Typography } from '@material-ui/core'
+import { Button, Card, CardActionArea, CardContent, CardHeader, CardMedia, Chip, Grid, makeStyles, Paper, Typography } from '@material-ui/core'
 
 // Shows singe quote and prediction. Routes to detailed view
 export function StockLink(props) {
@@ -84,28 +84,6 @@ export function StockLink(props) {
     </Grid>
   );
 }
-
-const useStyles = makeStyles({
-  root: {
-    background: 'linear-gradient(180deg, #FE6B8B 30%, #E8A87C 90%)',
-    marginTop: '5px',
-    marginBottom: '5px',
-    borderRadius: '50px',
-    width: 425
-  },
-  header: {
-    textAlign: 'center'
-  },
-  prediction: {
-    background: 'linear-gradient(180deg, #FE6B8B 30%, #E8A87C 90%)',
-    marginLeft: "5px"
-  },
-  button: {
-    backgroundColor: 'white',
-    color: 'black',
-    borderRadius: '50px'
-  }
-})
 
 export function StockListComponent(props) {
   const [newStocks, setNewStocks] = useState([]);
@@ -241,14 +219,6 @@ function PredictionComponent(props) {
     }
   });
 
-  // Zane working code
-  // return prediction !== null ? (
-  //   <div>
-  //     Prediction: {prediction.future_value.toFixed(2)} Range: {prediction.lower_value.toFixed(2)} -{" "}
-  //     {prediction.upper_value.toFixed(2)} on {prediction.prediction_date}
-  //   </div>
-  // ) : null;
-
   // Max testing
   return prediction !== null ? (
     <div className="mb-1">
@@ -258,4 +228,95 @@ function PredictionComponent(props) {
       <Chip label={"Date: " + prediction.prediction_date} className={classes.prediction}/>
     </div>
   ) : null;
-}
+};
+
+const popularStocks = [
+  { ticker: "AAPL", company_name: "Apple Inc." },
+  { ticker: "TSLA", company_name: "Tesla, Inc." },
+  { ticker: "AMZN", company_name: "Amazon.com, Inc." },
+  { ticker: "NFLX", company_name: "Netflix, Inc." },
+  { ticker: "MSFT", company_name: "Microsoft Corporation" }
+];
+
+export function LandingPageComponent(props) {
+  const classes = useStyles();
+  return (
+    <div>
+      <Grid container direction="row" xs={12}>
+        <Grid container direction="column" xs={6} alignItems="center">
+          <Typography variant="h4" className={classes.h4}>
+            Stock Prediction - Home
+          </Typography>
+          <Typography variant="h6" align="center">
+            Welcome to the Stock Prediction home page! Here you are able to predict the prices of your favorite stocks on the stock market. To begin, simply search a company name or stock ticker and hit enter.
+          </Typography>
+          <Grid item>
+            <Card className={classes.landingRoot}>
+              <CardMedia className={classes.landingMedia} component="img" image="https://user-images.githubusercontent.com/65428832/115729365-5ba3b300-a353-11eb-81a9-808eebcce8c2.png"/>
+            </Card>
+          </Grid>
+          <Typography variant="h6" align="center">
+            Once your stock has loaded, you have the option to add it to your watchlist. After adding it to your watchlist, you can predict the stock's price giving you a 30 day forecast, or you can remove it if you are no longer interested.
+          </Typography>
+          <Grid item>
+            <Card className={classes.landingRoot}>
+              <CardMedia className={classes.landingMedia} component="img" image="https://user-images.githubusercontent.com/65428832/115729385-5fcfd080-a353-11eb-8099-d263f6492f10.png"/>
+            </Card>
+          </Grid>
+          <Typography variant="h6" align="center">
+            Thanks for using our website, we wish you the best of luck in the market!
+          </Typography>
+        </Grid>
+        <Grid container direction="column" xs={6} alignItems="center" >
+          <Typography variant="h4" className={classes.h4}>
+            Popular Stocks
+          </Typography>
+          <StockList newStocks={popularStocks} {...props}>
+
+          </StockList>
+        </Grid>
+      </Grid>
+      <Typography variant="h4" className={classes.h4} align="center">
+        Your Tracked Stocks
+      </Typography>
+    </div>
+  )
+};
+
+const useStyles = makeStyles({
+  root: {
+    background: 'linear-gradient(180deg, #FE6B8B 30%, #E8A87C 90%)',
+    marginTop: '5px',
+    marginBottom: '5px',
+    borderRadius: '50px',
+    width: 425
+  },
+  header: {
+    textAlign: 'center'
+  },
+  prediction: {
+    background: 'linear-gradient(180deg, #FE6B8B 30%, #E8A87C 90%)',
+    marginLeft: '5px'
+  },
+  button: {
+    backgroundColor: 'white',
+    color: 'black',
+    borderRadius: '50px'
+  },
+  landingRoot: {
+    maxWidth: 550,
+    textAlign: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: '5px'
+  },
+  h4: {
+    color: '#FE6B8B'
+  },
+  landingMedia: {
+    height: '100%',
+    width: '100%'
+  }
+})
+
+// <img src="https://user-images.githubusercontent.com/65428832/115729365-5ba3b300-a353-11eb-81a9-808eebcce8c2.png"/>

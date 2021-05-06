@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 
-export var authToken = 'bua1l2n48v6q418fsepg';
+export var authToken = 'c2a55tiad3iegn221et0';
 document.cookie = `X-Authorization=${authToken}; path=/` 
 
 function App() {

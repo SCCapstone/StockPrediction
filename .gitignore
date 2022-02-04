@@ -181,3 +181,12 @@ sketch
 *.code-workspace
 
 # End of https://www.toptal.com/developers/gitignore/api/vscode,react,django
+
+
+# Extra static dirs
+static/
+static-root/
+
+# Lock files
+package-lock.json
+Pipfile.lock
